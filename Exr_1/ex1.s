@@ -90,11 +90,40 @@ _reset:
 		orr r2, r2, r3
 
 		str r2, [r1, #CMU_HFPERCLKEN0]
+
+		ldr r1, =GPIO_PA_BASE
+		mov r2, #0x2
+		str r2, [r1, #GPIO_CTRL] 
+
+		mov r2, #0x55555555
+		str r2, [r1, #GPIO_MODEH]
+		//sett leds low
+		mov r3, #0b11111111
+		lsl r3, r3, #0x8
+		str r3, [r1, #GPIO_DOUTSET]
+
+		//Set buttons
+		ldr r1, =GPIO_PC_BASE
+		mov r2, #0x33333333
+		str r2, [r1, #GPIO_MODEL]
+
+		mov r3, #0xff
+		str r3, [r1, #GPIO_DOUT]
+
+		loop: 
+			ldr r1, =GPIO_PC_BASE
+			ldr r2, =GPIO_PA_BASE
+			ldr r3, [r1, #GPIO_DIN]
+			and r3, r3, #0b11111111
+			lsl r3, r3, #0x8
+			str r3, [r2, #GPIO_DOUT]
+			B loop
+
 	      b .  // do nothing
 
 
-		cmubaseaddr:
-					.long CMUBASE	
+cmu_base_addr: 
+			.long CMU_BASE	
 	/////////////////////////////////////////////////////////////////////////////
 	//
   // GPIO handler

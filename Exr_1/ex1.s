@@ -109,12 +109,36 @@ _reset:
 
 		mov r3, #0xff
 		str r3, [r1, #GPIO_DOUT]
+
+		//Set up Interrupts
+
+		ldr r1, =GPIO_BASE
+		mov r2, #0x22222222
+		str r2, [r1, #GPIO_EXTISPELL]
+
+		mov r2, #0xff
+		str r2, [r1, #GPIO_EXTIFALL]
+
+		str r2, [r1, #GPIO_EXTRISE]
+
+		str r2, [r1, #GPIO_IEN]
+
+		mov r2, #0x802
+		ldr r3, =ISER0
+		str r2, [r3]
+		loop:
+			B loop
+
+
+
+
+
 		//Lights corresponding leds when a button is pressed
-		ldr r1, =GPIO_PC_BASE
+		/*ldr r1, =GPIO_PC_BASE
 		ldr r2, =GPIO_PA_BASE
 		mov r3, #0b00000000
 		lsl r3, r3, #0x8
-		str r3, [r2, #GPIO_DOUT]
+		str r3, [r2, #GPIO_DOUT]*/
 		/*loop: 
 			ldr r3, [r1, #GPIO_DIN]
 			lsl r3, r3, #0x8
@@ -136,7 +160,9 @@ cmu_base_addr:
         .thumb_func
 gpio_handler:  
 
-	      b .  // do nothing
+	    mov r3, #0b00000000
+		lsl r3, r3, #0x8
+		str r3, [r1, #GPIO_DOUTSET]
 	
 	/////////////////////////////////////////////////////////////////////////////
 	

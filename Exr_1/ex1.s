@@ -109,18 +109,20 @@ _reset:
 
 		mov r3, #0xff
 		str r3, [r1, #GPIO_DOUT]
-
-		loop: 
-			ldr r1, =GPIO_PC_BASE
-			ldr r2, =GPIO_PA_BASE
+		//Lights corresponding leds when a button is pressed
+		ldr r1, =GPIO_PC_BASE
+		ldr r2, =GPIO_PA_BASE
+		mov r3, #0b00000000
+		lsl r3, r3, #0x8
+		str r3, [r2, #GPIO_DOUT]
+		/*loop: 
 			ldr r3, [r1, #GPIO_DIN]
-			and r3, r3, #0b11111111
 			lsl r3, r3, #0x8
 			str r3, [r2, #GPIO_DOUT]
-			B loop
+			B loop*/
 
 	      b .  // do nothing
-
+		
 
 cmu_base_addr: 
 			.long CMU_BASE	

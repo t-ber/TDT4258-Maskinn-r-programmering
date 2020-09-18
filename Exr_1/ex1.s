@@ -114,23 +114,25 @@ _reset:
 
 		ldr r1, =GPIO_BASE
 		mov r2, #0x22222222
-		str r2, [r1, #GPIO_EXTISPELL]
+		str r2, [r1, #GPIO_EXTIPSELL]
 
 		mov r2, #0xff
 		str r2, [r1, #GPIO_EXTIFALL]
 
-		str r2, [r1, #GPIO_EXTRISE]
+		str r2, [r1, #GPIO_EXTIRISE]
 
 		str r2, [r1, #GPIO_IEN]
 
-		mov r2, #0x802
+		ldr r2, =0x802
 		ldr r3, =ISER0
 		str r2, [r3]
-		loop:
-			B loop
-
-
-
+		//Enable deepsleep
+		ldr r1, =SCR
+		mov r2, #0b110
+		str r2, [r1]
+		//wait for interupt
+		wfi
+	
 
 
 		//Lights corresponding leds when a button is pressed
@@ -138,14 +140,14 @@ _reset:
 		ldr r2, =GPIO_PA_BASE
 		mov r3, #0b00000000
 		lsl r3, r3, #0x8
-		str r3, [r2, #GPIO_DOUT]*/
-		/*loop: 
+		str r3, [r2, #GPIO_DOUT]
+		loop: 
 			ldr r3, [r1, #GPIO_DIN]
 			lsl r3, r3, #0x8
 			str r3, [r2, #GPIO_DOUT]
 			B loop*/
 
-	      b .  // do nothing
+	       // do nothing
 		
 
 cmu_base_addr: 
@@ -157,16 +159,33 @@ cmu_base_addr:
 	//
 	/////////////////////////////////////////////////////////////////////////////
 	
-        .thumb_func
+.thumb_func
 gpio_handler:  
-
-	    mov r3, #0b00000000
-		lsl r3, r3, #0x8
-		str r3, [r1, #GPIO_DOUTSET]
 	
+	//clear interupt
+
+	ldr r1, =GPIO_BASE
+	ldr r2, [r1, #GPIO_IF]
+	str r2, [r1, #GPIO_IFC]
+	
+	ldr r1, =GPIO_PC_BASE
+	ldr r2, =GPIO_PA_BASE
+	
+	//code
+	
+	ldr r3, [r1, #GPIO_DIN]
+	lsl r3, #0x8
+	str r3, [r2, #GPIO_DOUT]
+	
+		
+		
+	//clear interupt
+	
+	
+	wfi
 	/////////////////////////////////////////////////////////////////////////////
 	
-        .thumb_func
+.thumb_func
 dummy_handler:  
-        b .  // do nothing
+        bx lr  // do nothing
 

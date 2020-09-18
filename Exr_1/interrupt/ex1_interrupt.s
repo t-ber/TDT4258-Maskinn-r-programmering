@@ -115,6 +115,7 @@ _reset:
 		  str r2, [r1, #GPIO_DOUT]
 
           // Set up interrupts
+          ldr r1, =GPIO_BASE
           mov r2, #0x22222222
           str r2, [r1, #GPIO_EXTIPSELL]
 
@@ -125,14 +126,12 @@ _reset:
           str r2, [r1, #GPIO_IEN]
 
           ldr r1, =ISER0
-          mov r2, #0x80
-          lsl r2, #4
-          orr r2, r2, #0x2
+          ldr r2, =0x802
           str r2, [r1]
 
           // energy mode
           ldr r1, =SCR
-          mov r2, #6
+          mov r2, #0b110
           str r2, [r1]
           
           wfi
@@ -147,8 +146,10 @@ _reset:
         .thumb_func
 gpio_handler:  
 
-	      ldr r4, =GPIO_PC_BASE
+	      ldr r4, =GPIO_BASE
           ldr r5, [r4, #GPIO_IF]
+          str r5, [r4, #GPIO_IFC]
+          push {lr}
 
           and r6, r5, #0x10
           cmp r6, #0
@@ -170,8 +171,7 @@ gpio_handler:
           it ne
           blne led_off
 
-          str r5, [r4, #GPIO_IFC]
-
+          pop {lr}
           bx lr
 	
 	/////////////////////////////////////////////////////////////////////////////

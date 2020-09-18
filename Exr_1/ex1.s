@@ -168,10 +168,9 @@ gpio_handler:
 	ldr r2, [r1, #GPIO_IF]
 	str r2, [r1, #GPIO_IFC]
 	
+	//code
 	ldr r1, =GPIO_PC_BASE
 	ldr r2, =GPIO_PA_BASE
-	
-	//code
 	
 	ldr r3, [r1, #GPIO_DIN]
 	lsl r3, #0x8
@@ -182,7 +181,7 @@ gpio_handler:
 	//clear interupt
 	
 	
-	wfi
+	Bx lr
 	/////////////////////////////////////////////////////////////////////////////
 	
 .thumb_func

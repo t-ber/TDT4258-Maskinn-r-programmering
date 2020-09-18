@@ -123,31 +123,32 @@ _reset:
 loop:	  ldr r6, [r4, #GPIO_DIN]
           and r6, r6, #0xff // bryr oss kun om de 8 LSB
 	      eor r0, r5, r6 // r0 viser nå hvilke bit som har endret seg siden sist
+		  and r0, r0, r5 // r0 viser nå hvilke bit som har endret seg til å være lave
 
           // Sjekk om venstre-knapp har blitt trykket ned (SW5)
-          and r1, r0, #0x10 // ikke null hvis biten endret seg
-          and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
+          and r1, r0, #0x10 // ikke null hvis biten endret seg // til å være lav
+          // and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
           cmp r1, #0
 		  it ne
           blne led_rl // Roter ledene mot venstre
 
           // Sjekk om høyre-knapp har blitt trykket ned (SW7)
-          and r1, r0, #0x40 // ikke null hvis biten endret seg
-          and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
+          and r1, r0, #0x40 // ikke null hvis biten endret seg // til å være lav
+          // and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
           cmp r1, #0
 		  it ne
           blne led_rr // Roter ledene mot høyre
 
 		  // Sjekk om opp-knapp har blitt trykket ned (SW6)
-		  and r1, r0, #0x20 // ikke null hvis biten har endret seg
-		  and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
+		  and r1, r0, #0x20 // ikke null hvis biten har endret seg // til å være lav
+		  // and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
 		  cmp r1, #0
 		  it ne
 		  blne led_on  // Skru på led lengst til høyre
 
 		  // Sjekk om ned-knapp har blitt trykket ned (SW8)
-		  and r1, r0, #0x80 // ikke null hvis biten har endret seg
-		  and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
+		  and r1, r0, #0x80 // ikke null hvis biten har endret seg // til å være lav
+		  // and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
 		  cmp r1, #0
 		  it ne
 		  blne led_off // Skru av led lengst til høyre

@@ -83,7 +83,54 @@
 	      .type   _reset, %function
         .thumb_func
 _reset:   
-          // Set up GPIO Clock
+          bl setup_clock
+		  bl setup_leds
+		  bl setup_buttons
+		  b polling
+
+		.thumb_func
+polling:
+          // Loop initialization
+	      ldr r4, =GPIO_PC_BASE
+	      ldr r5, [r4, #GPIO_DIN]
+	      and r5, r5, #0xff
+
+loop:
+		  ldr r6, [r4, #GPIO_DIN]
+          and r6, r6, #0xff 
+	      eor r0, r5, r6 // find what bits have changed
+		  and r0, r0, r5 // find what bits have changed AND were high at last poll
+
+          // Check for button SW5 (left)
+          and r1, r0, #0x10
+          cmp r1, #0
+		  it ne
+          blne led_rl // Rotate LEDs left
+
+          // Check for button SW7 (right)
+          and r1, r0, #0x40
+          cmp r1, #0
+		  it ne
+          blne led_rr // Rotate LEDs right
+
+		  // Check for button SW6 (left)
+		  and r1, r0, #0x20
+		  cmp r1, #0
+		  it ne
+		  blne led_on  // Turn on the rightmost LED
+
+		  // Check for button SW8 (down)
+		  and r1, r0, #0x80
+		  cmp r1, #0
+		  it ne
+		  blne led_off // Turn off the rightmost LED
+	
+          mov r5, r6 // update 'previous value'
+          b loop
+
+		.thumb_func
+setup_clock:
+		  // setup GPIO clock
 		  ldr r1, =CMU_BASE
 		  ldr r2, [r1, #CMU_HFPERCLKEN0]
 		  mov r3, #1
@@ -91,6 +138,10 @@ _reset:
 		  orr r2, r2, r3
 		  str r2, [r1, #CMU_HFPERCLKEN0]
 
+		  bx lr
+
+		.thumb_func
+setup_leds:
 		  // Set high drive strenght
 		  ldr r1, =GPIO_PA_BASE
 		  mov r2, #0x2
@@ -105,7 +156,11 @@ _reset:
 		  lsl r2, r2, #8
 		  str r2, [r1, #GPIO_DOUTSET]
 
-          // Set button pins to input
+		  bx lr
+
+		.thumb_func
+setup_buttons:
+		  // Set button pins to input
 		  ldr r1, =GPIO_PC_BASE
 		  mov r2, #0x33333333
 		  str r2, [r1, #GPIO_MODEL]
@@ -114,49 +169,7 @@ _reset:
 		  mov r2, #0xff
 		  str r2, [r1, #GPIO_DOUT]
 
-          // Loop initialization
-		  // Merk at vi bruker registre r4+ for "variabler" som må 
-		  // beholde sin verdi etter funksjonskall
-	      ldr r4, =GPIO_PC_BASE
-	      ldr r5, [r4, #GPIO_DIN]
-	      and r5, r5, #0xff // bryr oss kun om de 8 LSB
-
-loop:	  ldr r6, [r4, #GPIO_DIN]
-          and r6, r6, #0xff // bryr oss kun om de 8 LSB
-	      eor r0, r5, r6 // r0 viser nå hvilke bit som har endret seg siden sist
-		  and r0, r0, r5 // r0 viser nå hvilke bit som har endret seg til å være lave
-
-          // Sjekk om venstre-knapp har blitt trykket ned (SW5)
-          and r1, r0, #0x10 // ikke null hvis biten endret seg // til å være lav
-          // and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
-          cmp r1, #0
-		  it ne
-          blne led_rl // Roter ledene mot venstre
-
-          // Sjekk om høyre-knapp har blitt trykket ned (SW7)
-          and r1, r0, #0x40 // ikke null hvis biten endret seg // til å være lav
-          // and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
-          cmp r1, #0
-		  it ne
-          blne led_rr // Roter ledene mot høyre
-
-		  // Sjekk om opp-knapp har blitt trykket ned (SW6)
-		  and r1, r0, #0x20 // ikke null hvis biten har endret seg // til å være lav
-		  // and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
-		  cmp r1, #0
-		  it ne
-		  blne led_on  // Skru på led lengst til høyre
-
-		  // Sjekk om ned-knapp har blitt trykket ned (SW8)
-		  and r1, r0, #0x80 // ikke null hvis biten har endret seg // til å være lav
-		  // and r1, r1, r5 // fortsatt ikke null hvis biten forrige gang var 1
-		  cmp r1, #0
-		  it ne
-		  blne led_off // Skru av led lengst til høyre
-	
-          mov r5, r6 // oppdaterer "forrige verdi" i r5
-          b loop
-
+		  bx lr
 
 	/////////////////////////////////////////////////////////////////////////////
 	//
@@ -167,11 +180,10 @@ loop:	  ldr r6, [r4, #GPIO_DIN]
 	
         .thumb_func
 gpio_handler:  
-
-	      b .  // do nothing
+		  b .  // do nothing
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
         .thumb_func
 dummy_handler:  
-        b .  // do nothing
+		  b .  // do nothing

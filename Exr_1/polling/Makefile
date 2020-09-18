@@ -15,7 +15,7 @@ ex1_polling.bin : ex1_polling.elf
 ex1_polling.elf : ex1_polling.o 
 	${LD} -T ${LINKERSCRIPT} $^ -o $@ ${LDFLAGS} 
 
-ex1_polling.o : ex1_polling.s efm32gg.s
+ex1_polling.o : ex1_polling.s efm32gg.s actions.s
 	${AS} ${ASFLAGS} $< -o $@
 
 .PHONY : upload

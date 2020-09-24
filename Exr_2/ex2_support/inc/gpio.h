@@ -3,4 +3,6 @@
 
 void setupGPIO();
 
+void turnOnLed(uint8_t led);
+
 #endif

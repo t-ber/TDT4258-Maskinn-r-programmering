@@ -15,4 +15,19 @@ void setupDAC()
 	 * data registers, DAC0_CH0DATA and DAC0_CH1DATA, for example from a
 	 * timer interrupt 
 	 */
+
+	// Step 1
+	int val = *CMU_HFPERCLKEN0;
+	int b = 1 << 17;
+	val = val | b;
+	*CMU_HFPERCLKEN0 = val;
+
+	// Step 2
+	*DAC0_CTRL = 0x50010;
+
+	// Step 3
+	*DAC0_CH0CTRL = 1;
+	*DAC0_CH1CTRL = 1;
+
+	// Step 4 er nok best å gjøre i interrupt, evt main for busy-waiting?
 }

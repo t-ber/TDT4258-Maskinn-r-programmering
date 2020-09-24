@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../inc/gpio.h"
 #include "efm32gg.h"
 
 /*

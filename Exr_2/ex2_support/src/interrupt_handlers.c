@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "efm32gg.h"
+#include "../inc/interrupt_handlers.h"
+#include "../inc/efm32gg.h"
 
 /*
  * TIMER1 interrupt handler 

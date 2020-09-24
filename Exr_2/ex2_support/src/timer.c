@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "efm32gg.h"
+#include "../inc/timer.h"
+#include "../inc/efm32gg.h"
 
 /*
  * function to setup the timer 

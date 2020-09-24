@@ -2,7 +2,7 @@
 #include <stdbool.h>
 
 #include "../inc/dac.h"
-#include "efm32gg.h"
+#include "../inc/efm32gg.h"
 
 void setupDAC()
 {

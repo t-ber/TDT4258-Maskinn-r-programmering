@@ -27,7 +27,17 @@ void setupGPIO()
 }	  
 
 void turnOnLed(uint8_t led_num){
-	uint8_t regOffset = 7;
-	*GPIO_PA_DOUT &= ~(1 << led_num + regOffset);
+	uint8_t regOffset = led_num + REG_LED_OFFSET;
+	*GPIO_PA_DOUT &= ~(1 << regOffset);
+}
+
+void turnOffLed(uint8_t led_num){
+	uint8_t regOffset = led_num + REG_LED_OFFSET;
+	*GPIO_PA_DOUT |= (1 << regOffset);
+}
+
+void toggleLed(uint8_t led_num){
+	uint8_t regOffset = led_num + REG_LED_OFFSET;
+	*GPIO_PA_DOUT ^= (1 << regOffset);
 }
 

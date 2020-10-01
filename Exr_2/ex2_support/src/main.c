@@ -35,7 +35,7 @@ int main(void)
 	 */
 	setupGPIO();
 	setupDAC();
-	setupTimer(SAMPLE_PERIOD);
+	setupTimer(1000);
 
 	/*
 	 * Enable interrupt handling 
@@ -46,14 +46,14 @@ int main(void)
 	 * TODO for higher energy efficiency, sleep while waiting for
 	 * interrupts instead of infinite loop for busy-waiting 
 	 */
-	turnOnLed(1);
-	while (1) ;
+	
 
 	return 0;
 }
 
 void setupNVIC()
 {
+	*ISER0 = (1 << 12);
 	/*
 	 * TODO use the NVIC ISERx registers to enable handling of
 	 * interrupt(s) remember two things are necessary for interrupt

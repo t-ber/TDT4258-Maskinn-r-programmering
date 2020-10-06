@@ -3,4 +3,8 @@
 
 void setupGPIO();
 
+void turnOnLed();
+void turnOffLed();
+void toggleLed();
+
 #endif

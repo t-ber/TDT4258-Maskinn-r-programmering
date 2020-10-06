@@ -3,6 +3,7 @@
 
 #include "../inc/timer.h"
 #include "../inc/efm32gg.h"
+#include "../inc/interrupt_handlers.h"
 
 /*
  * function to setup the timer 
@@ -22,9 +23,20 @@ void setupTimer(uint16_t period)
 	 * interrupt handler will not be invoked. 
 	 */
 
-	*TIMER1_CTRL |= (0x3 << 24);
+	*TIMER1_CTRL |= (0x7 << 24);
 	*CMU_HFPERCLKEN0 |= (1 << 6);
 	*TIMER1_TOP = period;
 	*TIMER1_IEN = 1;
 	*TIMER1_CMD = 1;
+}
+
+void setTimerTop(uint16_t top)
+{
+	*TIMER1_TOP = top;
+	*TIMER1_CMD = 0b01;
+}
+
+void stopTimer()
+{
+	*TIMER1_CMD = 0b10;
 }

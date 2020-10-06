@@ -21,4 +21,26 @@ void setupGPIO()
 	*GPIO_PA_CTRL = 2;	/* set high drive strength */
 	*GPIO_PA_MODEH = 0x55555555;	/* set pins A8-15 as output */
 	*GPIO_PA_DOUT = 0xff00;	/* turn off LEDs (LEDs are active low) */
+
+	*GPIO_PC_MODEL = 0x33333333;
+	*GPIO_PC_DOUT = 0xff;
+
+	*GPIO_EXTIPSELL = 0x22222222;
+	*GPIO_EXTIFALL = 0xff;
+	*GPIO_IEN = 0xff;
+}
+
+void turnOnLed()
+{
+	*GPIO_PA_DOUTCLR = 1 << 8;
+}
+
+void turnOffLed()
+{
+	*GPIO_PA_DOUTSET = 1 << 8;
+}
+
+void toggleLed()
+{
+	*GPIO_PA_DOUTSET ^= (1 << 8);
 }

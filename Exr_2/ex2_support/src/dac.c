@@ -3,6 +3,12 @@
 
 #include "../inc/dac.h"
 #include "../inc/efm32gg.h"
+#include "../inc/timer.h"
+#include "../inc/rtc.h"
+
+static struct Note currentNoteArray[64];
+static uint32_t currentNoteIndex;
+static uint32_t currentNoteArraySize;
 
 void setupDAC()
 {
@@ -28,4 +34,72 @@ void setupDAC()
 	*DAC0_CH1CTRL = 1;
 
 	// Step 4 er nok best å gjøre i interrupt, evt main for busy-waiting?
+}
+
+void playNote(Note n)
+{	
+	if (n.top == 0) {
+		stopTimer();
+	} else {
+		setTimerTop(n.top);
+	}
+	startRTC(n.dur);
+}
+
+void onNoteCleared()
+{
+	if (currentNoteIndex < currentNoteArraySize) {
+		playNote(currentNoteArray[currentNoteIndex]);
+	}
+	else {
+		playNote((struct Note) { .top = 0, .dur = 100 } );
+	}
+	currentNoteIndex++;
+}
+
+void playLisa() {
+	struct Note lisa[] = {
+		(struct Note) { .top = C4, .dur = 500 },
+		(struct Note) { .top = D4, .dur = 500 },
+		(struct Note) { .top = E4, .dur = 500 },
+		(struct Note) { .top = F4, .dur = 500 },
+		(struct Note) { .top = G4, .dur = 1000 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = G4, .dur = 990 },
+		(struct Note) { .top = A4, .dur = 500 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = A4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = A4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = A4, .dur = 490 },
+		(struct Note) { .top = G4, .dur = 1000 },
+		(struct Note) { .top = F4, .dur = 500 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = F4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = F4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = F4, .dur = 490 },
+		(struct Note) { .top = E4, .dur = 1000 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = E4, .dur = 990 },
+		(struct Note) { .top = D4, .dur = 500 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = C4, .dur = 500},
+		(struct Note) { .top = 0, .dur = 10}
+	};
+	
+	for (uint32_t i = 0; i < sizeof(lisa); i++) {
+		currentNoteArray[i] = lisa[i];
+	}
+	currentNoteArraySize = sizeof(lisa);
+	currentNoteIndex = 0;
+
+	onNoteCleared();
 }

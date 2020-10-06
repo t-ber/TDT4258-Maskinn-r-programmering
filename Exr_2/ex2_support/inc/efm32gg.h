@@ -41,6 +41,7 @@
 #define GPIO_EXTIRISE  ((volatile uint32_t*)(GPIO_PA_BASE + 0x108))
 #define GPIO_EXTIFALL  ((volatile uint32_t*)(GPIO_PA_BASE + 0x10c))
 #define GPIO_IEN       ((volatile uint32_t*)(GPIO_PA_BASE + 0x110))
+#define GPIO_IF       ((volatile uint32_t*)(GPIO_PA_BASE + 0x114))
 #define GPIO_IFC       ((volatile uint32_t*)(GPIO_PA_BASE + 0x11c))
 
 // CMU
@@ -51,6 +52,9 @@
 #define CMU_HFCORECLKEN0 ((volatile uint32_t*)(CMU_BASE2 + 0x040))
 #define CMU_HFPERCLKEN0  ((volatile uint32_t*)(CMU_BASE2 + 0x044))
 #define CMU_CMD          ((volatile uint32_t*)(CMU_BASE2 + 0x024))
+#define CMU_LFCLKSEL     ((volatile uint32_t*)(CMU_BASE2 + 0x028))
+#define CMU_LFACLKEN0    ((volatile uint32_t*)(CMU_BASE2 + 0x058))
+#define CMU_LFAPRESC0    ((volatile uint32_t*)(CMU_BASE2 + 0x068))
 
 #define CMU2_HFPERCLKEN0_DAC0   (1 << 17)
 #define CMU2_HFPERCLKEN0_PRS    (1 << 15)
@@ -69,6 +73,15 @@
 #define TIMER1_IFC ((volatile uint32_t*)(TIMER1_BASE + 0x18))
 #define TIMER1_TOP ((volatile uint32_t*)(TIMER1_BASE + 0x1c))
 #define TIMER1_CNT ((volatile uint32_t*)(TIMER1_BASE + 0x24))
+
+#define RTC_BASE 0x40080000
+
+#define RTC_CTRL ((volatile uint32_t*)(RTC_BASE + 0x00))
+#define RTC_CNT ((volatile uint32_t*)(RTC_BASE + 0x04))
+#define RTC_COMP0 ((volatile uint32_t*)(RTC_BASE + 0x08))
+#define RTC_IF ((volatile uint32_t*)(RTC_BASE + 0x10))
+#define RTC_IFC ((volatile uint32_t*)(RTC_BASE + 0x18))
+#define RTC_IEN ((volatile uint32_t*)(RTC_BASE + 0x1C))
 
 // NVIC
 

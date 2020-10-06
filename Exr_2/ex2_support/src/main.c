@@ -6,6 +6,7 @@
 #include "../inc/dac.h"
 #include "../inc/interrupt_handlers.h"
 #include "../inc/timer.h"
+#include "../inc/rtc.h"
 
 /*
  * TODO calculate the appropriate sample period for the sound wave(s) you 
@@ -16,7 +17,6 @@
 /*
  * The period between sound samples, in clock cycles 
  */
-#define   SAMPLE_PERIOD   13378
 
 /*
  * Declaration of peripheral setup functions 
@@ -35,12 +35,21 @@ int main(void)
 	 */
 	setupGPIO();
 	setupDAC();
-	setupTimer(SAMPLE_PERIOD);
+	setupTimer(C4);
+	setupRTC();
 
 	/*
 	 * Enable interrupt handling 
 	 */
 	setupNVIC();
+
+	// turnOnLed();
+	// turnOffLed();
+	// startRTC(10000);
+
+	// struct Note n = { .top = C4, .dur = 1000 };
+	// playNote(n);
+	playLisa();
 
 	/*
 	 * TODO for higher energy efficiency, sleep while waiting for
@@ -62,7 +71,9 @@ void setupNVIC()
 	 * assignment. 
 	 */
 
-	*ISER0 |= (1 << 12);
+	*ISER0 |= (1 << 12); // Timer1
+	*ISER0 |= 0x802; // GPIO
+	*ISER0 |= (1 << 30); // RTC
 }
 
 /*

@@ -3,7 +3,4 @@
 
 void setupDAC();
 
-void startSoundAtPitch(float freq);
-void stopSound();
-
 #endif

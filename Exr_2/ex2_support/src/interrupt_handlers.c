@@ -2,30 +2,31 @@
 #include <stdbool.h>
 
 #include "../inc/interrupt_handlers.h"
-#include "../inc/gpio.h"
 #include "../inc/efm32gg.h"
-#include "../inc/sound.h"
-
 /*
  * TIMER1 interrupt handler 
  */
+
 void __attribute__ ((interrupt)) TIMER1_IRQHandler()
-{	
+{
+	/*
+	 * TODO feed new samples to the DAC remember to clear the pending
+	 * interrupt by writing 1 to TIMER1_IFC 
+	 */
+
+	static volatile uint16_t alternating_bool = 0;
+
+	if (alternating_bool == 0) {
+		alternating_bool = 1;
+		*DAC0_CH0DATA = AMPLITUDE;
+		*DAC0_CH1DATA = AMPLITUDE;
+	} else {
+		alternating_bool = 0;
+		*DAC0_CH0DATA = 0;
+		*DAC0_CH1DATA = 0;
+	}
+
 	*TIMER1_IFC = 1;
-	static volatile bool flank = true;
-
-	uint16_t data;
-	if (flank) {
-		// data = DAC_MIDDLE + AMPLITUDE / 2;
-		data = 1000;
-	}
-	else {
-		// data = DAC_MIDDLE - AMPLITUDE / 2;
-		data = 0;
-	}
-
-	*DAC0_COMBDATA = (data << 16) | data;
-	flank = !flank;
 }
 
 /*

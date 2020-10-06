@@ -16,10 +16,12 @@ void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 
 	uint16_t data;
 	if (flank) {
-		data = DAC_MIDDLE + AMPLITUDE / 2;
+		// data = DAC_MIDDLE + AMPLITUDE / 2;
+		data = 1000;
 	}
 	else {
-		data = DAC_MIDDLE - AMPLITUDE / 2;
+		// data = DAC_MIDDLE - AMPLITUDE / 2;
+		data = 0;
 	}
 
 	*DAC0_COMBDATA = (data << 16) | data;

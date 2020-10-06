@@ -4,7 +4,7 @@
 #define AMPLITUDE 100
 #define DAC_MIDDLE 0x800
 
-#define NO_NOTE 0
+// #define NO_NOTE 0
 
 #define C2 65.406
 #define D2 73.416
@@ -36,9 +36,9 @@
 #define B5 987.767
 #define C6 1046.502
 
-struct Note {
-    float freq;
-    uint16_t dur; // duration in milliseconds
-}
+// struct Note {
+//     float freq;
+//     uint16_t dur; // duration in milliseconds
+// }
 
 #endif

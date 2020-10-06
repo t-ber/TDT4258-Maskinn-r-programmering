@@ -6,6 +6,7 @@
 #include "../inc/dac.h"
 #include "../inc/interrupt_handlers.h"
 #include "../inc/timer.h"
+#include "../inc/sound.h"
 
 /*
  * TODO calculate the appropriate sample period for the sound wave(s) you 
@@ -16,13 +17,13 @@
 /*
  * The period between sound samples, in clock cycles 
  */
-#define   SAMPLE_PERIOD   0
+// #define   SAMPLE_PERIOD   0
 
 /*
  * Declaration of peripheral setup functions 
  */
-void setupTimer(uint16_t period);
-void setupDAC();
+// void setupTimer(uint16_t period);
+// void setupDAC();
 void setupNVIC();
 
 /*
@@ -35,7 +36,7 @@ int main(void)
 	 */
 	setupGPIO();
 	setupDAC();
-	setupTimer(1000);
+	setupTimer(3344); // Should give a frequency of middle C
 
 	/*
 	 * Enable interrupt handling 
@@ -47,6 +48,7 @@ int main(void)
 	 * interrupts instead of infinite loop for busy-waiting 
 	 */
 	
+	startSoundAtPitch(3344);
 
 	return 0;
 }

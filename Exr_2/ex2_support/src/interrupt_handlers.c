@@ -4,6 +4,7 @@
 #include "../inc/interrupt_handlers.h"
 #include "../inc/gpio.h"
 #include "../inc/efm32gg.h"
+#include "../inc/sound.h"
 
 /*
  * TIMER1 interrupt handler 
@@ -11,11 +12,18 @@
 void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 {	
 	*TIMER1_IFC = 1;
-	toggleLed(2);
-	/*
-	 * TODO feed new samples to the DAC remember to clear the pending
-	 * interrupt by writing 1 to TIMER1_IFC 
-	 */
+	static volatile bool flank = true;
+
+	uint16_t data;
+	if (flank) {
+		data = DAC_MIDDLE + AMPLITUDE / 2;
+	}
+	else {
+		data = DAC_MIDDLE - AMPLITUDE / 2;
+	}
+
+	*DAC0_COMBDATA = (data << 16) | data;
+	flank = !flank;
 }
 
 /*

@@ -67,9 +67,9 @@ void setupNVIC()
 	
 	*TIMER1_IEN |= (0xff); //Enable TIMER1 interrupts. more infor about this and other rimer registers at pp. 550 in EFM32GG RM
 		//enable CPU interrupt handling
-	*ISER0 |= (TIMER1_BIT << 11); //setting bit 12
-	*ISER0 |= (GPIO_ODD_BIT << 10); //setting bit 11
-	*ISER0 |= (GPIO_EVEN_BIT << 1); //setting bit 2
+	*ISER0 |= (TIMER1_BIT << 12); //setting bit 12
+	*ISER0 |= (GPIO_ODD_BIT << 11); //setting bit 11
+	*ISER0 |= (GPIO_EVEN_BIT << 2); //setting bit 2
 	/*
 	 * TODO use the NVIC ISERx registers to enable handling of
 	 * interrupt(s) remember two things are necessary for interrupt

@@ -18,14 +18,19 @@
  */
 #define   SAMPLE_PERIOD   0
 #define		TIMER1_BIT 1 // setting timer_1 bit in ISR0
+<<<<<<< HEAD
 #define		GPIO_ODD_BIT	//setting odd gpio bit in ISR0
 #define		GPIO_EVEN_BIT	//setting even gpio bit in ISR0
 
+=======
+#define		GPIO_ODD_BIT 1//setting odd gpio bit in ISR0
+#define		GPIO_EVEN_BIT 1	//setting even gpio bit in ISR0
+>>>>>>> ee4adbfba15f20b74c92f4eaca765790f8e8bf40
 
 /*
  * Declaration of peripheral setup functions 
  */
-void setupTimer(uint32_t period);
+void setupTimer(uint16_t period);
 void setupDAC();
 void setupNVIC();
 
@@ -39,7 +44,7 @@ int main(void)
 	 */
 	setupGPIO();
 	setupDAC();
-	setupTimer(SAMPLE_PERIOD);
+	setupTimer(1000);
 
 	/*
 	 * Enable interrupt handling 
@@ -50,13 +55,27 @@ int main(void)
 	 * TODO for higher energy efficiency, sleep while waiting for
 	 * interrupts instead of infinite loop for busy-waiting 
 	 */
-	while (1) ;
+	
 
 	return 0;
 }
 
 void setupNVIC()
 {
+	
+
+	//Enabling GPIO interrupts
+	*GPIO_EXTIPSELL |= (0x22222222);
+	*GPIO_EXTIFALL |= (0xff); 	//1->0 transition
+	*GPIO_EXTIRISE |= (0xff);		//0->1 transition
+	*GPIO_IEN |= (0xff);		//enable interrupt generation	//Enable TIMER1 clock
+	*CMU_HFPERCLKEN0 |= (1<<5);//pp. 151 in EFM32GG RM
+	
+	*TIMER1_IEN |= (0xff); //Enable TIMER1 interrupts. more infor about this and other rimer registers at pp. 550 in EFM32GG RM
+		//enable CPU interrupt handling
+	*ISER0 |= (TIMER1_BIT << 12); //setting bit 12
+	*ISER0 |= (GPIO_ODD_BIT << 11); //setting bit 11
+	*ISER0 |= (GPIO_EVEN_BIT << 2); //setting bit 2
 	/*
 	 * TODO use the NVIC ISERx registers to enable handling of
 	 * interrupt(s) remember two things are necessary for interrupt

@@ -9,6 +9,8 @@ typedef struct Note {
 void setupDAC();
 void playNote(Note n);
 void onNoteCleared();
+
 void playLisa();
+void playPirates();
 
 #endif

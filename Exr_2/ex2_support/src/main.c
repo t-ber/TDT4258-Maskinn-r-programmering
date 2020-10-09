@@ -43,13 +43,15 @@ int main(void)
 	 */
 	setupNVIC();
 
+	stopTimer();
+
 	// turnOnLed();
 	// turnOffLed();
 	// startRTC(10000);
 
 	// struct Note n = { .top = C4, .dur = 1000 };
 	// playNote(n);
-	playLisa();
+	// playLisa();
 
 	/*
 	 * TODO for higher energy efficiency, sleep while waiting for

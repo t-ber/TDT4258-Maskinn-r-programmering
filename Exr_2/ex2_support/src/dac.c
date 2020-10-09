@@ -6,7 +6,7 @@
 #include "../inc/timer.h"
 #include "../inc/rtc.h"
 
-static struct Note currentNoteArray[64];
+static struct Note currentNoteArray[128];
 static uint32_t currentNoteIndex;
 static uint32_t currentNoteArraySize;
 
@@ -52,7 +52,7 @@ void onNoteCleared()
 		playNote(currentNoteArray[currentNoteIndex]);
 	}
 	else {
-		playNote((struct Note) { .top = 0, .dur = 100 } );
+		stopTimer();
 	}
 	currentNoteIndex++;
 }
@@ -95,10 +95,111 @@ void playLisa() {
 		(struct Note) { .top = 0, .dur = 10}
 	};
 	
-	for (uint32_t i = 0; i < sizeof(lisa); i++) {
+	for (uint32_t i = 0; i < sizeof(lisa) && i < sizeof(currentNoteArray); i++) {
 		currentNoteArray[i] = lisa[i];
 	}
 	currentNoteArraySize = sizeof(lisa);
+	currentNoteIndex = 0;
+
+	onNoteCleared();
+}
+
+void playPirates() {
+	struct Note pirates[] = {
+		(struct Note) { .top = A3, .dur = 250 },
+		(struct Note) { .top = C4, .dur = 250 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 250 },
+		(struct Note) { .top = E4, .dur = 250 },
+		(struct Note) { .top = F4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = F4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = F4, .dur = 250 },
+		(struct Note) { .top = G4, .dur = 250 },
+		(struct Note) { .top = E4, .dur = 500 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = E4, .dur = 500 },
+		(struct Note) { .top = D4, .dur = 250 },
+		(struct Note) { .top = C4, .dur = 240 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = C4, .dur = 250 },
+		(struct Note) { .top = D4, .dur = 500 },
+		(struct Note) { .top = 0, .dur = 250 },
+
+		(struct Note) { .top = A3, .dur = 250 },
+		(struct Note) { .top = C4, .dur = 250 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 250 },
+		(struct Note) { .top = E4, .dur = 250 },
+		(struct Note) { .top = F4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = F4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = F4, .dur = 250 },
+		(struct Note) { .top = G4, .dur = 250 },
+		(struct Note) { .top = E4, .dur = 500 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = E4, .dur = 500 },
+		(struct Note) { .top = D4, .dur = 250 },
+		(struct Note) { .top = C4, .dur = 240 },
+		(struct Note) { .top = D4, .dur = 500 },
+		(struct Note) { .top = 0, .dur = 500 },
+
+		(struct Note) { .top = A3, .dur = 250 },
+		(struct Note) { .top = C4, .dur = 250 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = D4, .dur = 250 },
+		(struct Note) { .top = F4, .dur = 250 },
+		(struct Note) { .top = G4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = G4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = G4, .dur = 250 },
+		(struct Note) { .top = A4, .dur = 250 },
+		(struct Note) { .top = A4S, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = A4S, .dur = 500 },
+		(struct Note) { .top = A4, .dur = 250 },
+		(struct Note) { .top = G4, .dur = 250 },
+		(struct Note) { .top = A4, .dur = 250 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 250 },
+
+		(struct Note) { .top = D4, .dur = 250 },
+		(struct Note) { .top = E4, .dur = 250 },
+		(struct Note) { .top = F4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = F4, .dur = 500 },
+		(struct Note) { .top = G4, .dur = 500 },
+		(struct Note) { .top = A4, .dur = 250 },
+		(struct Note) { .top = D4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 250 },
+
+		(struct Note) { .top = D4, .dur = 250 },
+		(struct Note) { .top = F4, .dur = 250 },
+		(struct Note) { .top = E4, .dur = 490 },
+		(struct Note) { .top = 0, .dur = 10 },
+		(struct Note) { .top = E4, .dur = 500 },
+		(struct Note) { .top = F4, .dur = 250 },
+		(struct Note) { .top = E4, .dur = 250 },
+		(struct Note) { .top = D4, .dur = 500 }
+
+	};
+	
+	for (uint32_t i = 0; i < sizeof(pirates) && i < sizeof(currentNoteArray); i++) {
+		currentNoteArray[i] = pirates[i];
+	}
+	currentNoteArraySize = sizeof(pirates);
 	currentNoteIndex = 0;
 
 	onNoteCleared();

@@ -48,19 +48,21 @@ void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler()
 	*GPIO_IFC = IF;
 
 	if (IF & 0x01) {
-		setTimerTop(C4);
+		// setTimerTop(C4);
+		playLisa();
 	}
 
 	if (IF & 0x04) {
-		setTimerTop(E4);
+		// setTimerTop(E4);
+		playPirates();
 	}
 
 	if (IF & 0x10) {
-		setTimerTop(G4);
+		// setTimerTop(G4);
 	}
 
 	if (IF & 0x40) {
-		setTimerTop(B4);
+		// setTimerTop(B4);
 	}
 }
 
@@ -77,15 +79,15 @@ void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
 	*GPIO_IFC = IF;
 
 	if (IF & 0x02) {
-		setTimerTop(D4);
+		// setTimerTop(D4);
 	}
 
 	if (IF & 0x08) {
-		setTimerTop(F4);
+		// setTimerTop(F4);
 	}
 
 	if (IF & 0x20) {
-		setTimerTop(A4);
+		// setTimerTop(A4);
 	}
 
 	if (IF & 0x80) {

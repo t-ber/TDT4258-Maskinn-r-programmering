@@ -85,10 +85,11 @@ void setupPolling()
 	uint32_t buttonPushPrevious = *GPIO_PC_DIN;
 	buttonPushPrevious = buttonPushPrevious&0xff;
 	//buttonPushPrevious = buttonPushPrevious&0xff;
-
+	uint32_t prevTimerValue = *TIMER1_CNT;
 
 	while(1)
 	{
+		uint32_t currentTimerValue = *TIMER1_CNT;
 		uint32_t buttonPushCurrent = *GPIO_PC_DIN;
 		buttonPushCurrent = buttonPushCurrent&0xff;
 		uint32_t buttonChange = buttonPushPrevious^buttonPushCurrent; //XOR previous and current
@@ -104,8 +105,26 @@ void setupPolling()
 		{
 			playPirates();
 		}
+		else if(prevTimerValue>currentTimerValue)
+		{
 
-	
+	static volatile uint16_t alternating_bool = 0;
+
+	if (alternating_bool == 0) {
+		alternating_bool = 1;
+		*DAC0_CH0DATA = AMPLITUDE;
+		*DAC0_CH1DATA = AMPLITUDE;
+		// turnOnLed();
+	} else {
+		alternating_bool = 0;
+		*DAC0_CH0DATA = 0;
+		*DAC0_CH1DATA = 0;
+		// turnOffLed();
+	}
+
+		}
+
+		uint32_t prevTimerValue = currentTimerValue;
 
 }
 

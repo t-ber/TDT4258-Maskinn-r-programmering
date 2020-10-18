@@ -10,13 +10,10 @@
 /*
  * TIMER1 interrupt handler 
  */
-
+/*
 void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 {
-	/*
-	 * TODO feed new samples to the DAC remember to clear the pending
-	 * interrupt by writing 1 to TIMER1_IFC 
-	 */
+
 
 	static volatile uint16_t alternating_bool = 0;
 
@@ -34,16 +31,14 @@ void __attribute__ ((interrupt)) TIMER1_IRQHandler()
 
 	*TIMER1_IFC = 1;
 }
+*/
 
 /*
  * GPIO even pin interrupt handler 
  */
+/*
 void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler()
 {
-	/*
-	 * TODO handle button pressed event, remember to clear pending
-	 * interrupt 
-	 */
 	uint32_t IF = *GPIO_IF;
 	*GPIO_IFC = IF;
 
@@ -65,16 +60,13 @@ void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler()
 		// setTimerTop(B4);
 	}
 }
-
+*/
 /*
  * GPIO odd pin interrupt handler 
  */
+/*
 void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
 {
-	/*
-	 * TODO handle button pressed event, remember to clear pending
-	 * interrupt 
-	 */
 	uint32_t IF = *GPIO_IF;
 	*GPIO_IFC = IF;
 
@@ -95,7 +87,8 @@ void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
 	}
 	
 }
-
+*/
+/*
 void __attribute__ ((interrupt)) RTC_IRQHandler()
 {
 	*RTC_IFC = *RTC_IF;
@@ -103,3 +96,5 @@ void __attribute__ ((interrupt)) RTC_IRQHandler()
 	stopTimer();
 	onNoteCleared();
 }
+
+*/

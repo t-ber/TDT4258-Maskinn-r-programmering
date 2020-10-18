@@ -5,6 +5,7 @@
 #include "../inc/efm32gg.h"
 #include "../inc/timer.h"
 #include "../inc/rtc.h"
+#include "../inc/gpio.h"
 
 static struct Note currentNoteArray[128];
 static uint32_t currentNoteIndex;
@@ -50,14 +51,75 @@ void onNoteCleared()
 {
 	if (currentNoteIndex < currentNoteArraySize) {
 		playNote(currentNoteArray[currentNoteIndex]);
+		currentNoteIndex++;
 	}
 	else {
 		stopTimer();
+		clearRTC();
 	}
-	currentNoteIndex++;
 }
 
-void playLisa() {
+void stopPlaying()
+{
+	currentNoteArraySize = 0;
+	currentNoteIndex = 0;
+	onNoteCleared();
+}
+
+void playImperial()
+{
+	struct Note imperial[] = {
+		(struct Note) { .top = 2*A3, .dur = 750 },
+		(struct Note) { .top = 0, .dur = 20 },
+		(struct Note) { .top = 2*A3, .dur = 730 },
+		(struct Note) { .top = 0, .dur = 20 },
+		(struct Note) { .top = 2*A3, .dur = 730 },
+		(struct Note) { .top = 2*F3, .dur = 500 },
+		(struct Note) { .top = 2*C4, .dur = 250 },
+		(struct Note) { .top = 2*A3, .dur = 750 },
+		(struct Note) { .top = 2*F3, .dur = 500 },
+		(struct Note) { .top = 2*C4, .dur = 250 },
+		(struct Note) { .top = 2*A3, .dur = 1000 },
+		(struct Note) { .top = 0, .dur = 500 },
+
+		(struct Note) { .top = 2*E4, .dur = 750 },
+		(struct Note) { .top = 0, .dur = 20 },
+		(struct Note) { .top = 2*E4, .dur = 730 },
+		(struct Note) { .top = 0, .dur = 20 },
+		(struct Note) { .top = 2*E4, .dur = 730 },
+		(struct Note) { .top = 2*F4, .dur = 500 },
+		(struct Note) { .top = 2*C4, .dur = 250 },
+		(struct Note) { .top = 2*G3S, .dur = 750 },
+		(struct Note) { .top = 2*F3, .dur = 500 },
+		(struct Note) { .top = 2*C4, .dur = 250 },
+		(struct Note) { .top = 2*A3, .dur = 1000 },
+		(struct Note) { .top = 0, .dur = 500 },
+
+		(struct Note) { .top = 2*A4, .dur = 750 },
+		(struct Note) { .top = 2*A3, .dur = 500 },
+		(struct Note) { .top = 0, .dur = 20 },
+		(struct Note) { .top = 2*A3, .dur = 230 },
+		(struct Note) { .top = 2*A4, .dur = 750 },
+		(struct Note) { .top = 2*G4S, .dur = 500 },
+		(struct Note) { .top = 2*G4, .dur = 250 },
+		(struct Note) { .top = 2*F4S, .dur = 125 },
+		(struct Note) { .top = 2*F4, .dur = 250 },
+		(struct Note) { .top = 2*F4S, .dur = 250 }
+
+	};
+
+	for (uint32_t i = 0; i < sizeof(imperial) && i < sizeof(currentNoteArray); i++) {
+		currentNoteArray[i] = imperial[i];
+	}
+	currentNoteArraySize = sizeof(imperial) / sizeof(imperial[0]);
+	currentNoteIndex = 0;
+
+	onNoteCleared();
+
+}
+
+void playLisa()
+{
 	struct Note lisa[] = {
 		(struct Note) { .top = C4, .dur = 500 },
 		(struct Note) { .top = D4, .dur = 500 },
@@ -98,13 +160,14 @@ void playLisa() {
 	for (uint32_t i = 0; i < sizeof(lisa) && i < sizeof(currentNoteArray); i++) {
 		currentNoteArray[i] = lisa[i];
 	}
-	currentNoteArraySize = sizeof(lisa);
+	currentNoteArraySize = sizeof(lisa) / sizeof(lisa[0]);
 	currentNoteIndex = 0;
 
 	onNoteCleared();
 }
 
-void playPirates() {
+void playPirates()
+{
 	struct Note pirates[] = {
 		(struct Note) { .top = A3, .dur = 250 },
 		(struct Note) { .top = C4, .dur = 250 },
@@ -199,7 +262,24 @@ void playPirates() {
 	for (uint32_t i = 0; i < sizeof(pirates) && i < sizeof(currentNoteArray); i++) {
 		currentNoteArray[i] = pirates[i];
 	}
-	currentNoteArraySize = sizeof(pirates);
+	currentNoteArraySize = sizeof(pirates) / sizeof(pirates[0]);
+	currentNoteIndex = 0;
+
+	onNoteCleared();
+}
+
+void playCDE()
+{
+	struct Note cde[] = {
+		(Note) { .top = C4, .dur = 500 },
+		(Note) { .top = D4, .dur = 500 },
+		(Note) { .top = E4, .dur = 500 }
+	};
+	
+	for (uint32_t i = 0; i < sizeof(cde) && i < sizeof(currentNoteArray); i++) {
+		currentNoteArray[i] = cde[i];
+	}
+	currentNoteArraySize = sizeof(cde) / sizeof(cde[0]);
 	currentNoteIndex = 0;
 
 	onNoteCleared();

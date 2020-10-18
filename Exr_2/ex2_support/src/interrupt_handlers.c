@@ -80,6 +80,7 @@ void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
 
 	if (IF & 0x02) {
 		// setTimerTop(D4);
+		playImperial();
 	}
 
 	if (IF & 0x08) {
@@ -91,7 +92,7 @@ void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
 	}
 
 	if (IF & 0x80) {
-		stopTimer();
+		stopPlaying();
 	}
 	
 }

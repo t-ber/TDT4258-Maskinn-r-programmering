@@ -3,7 +3,6 @@
 
 #include "../inc/timer.h"
 #include "../inc/efm32gg.h"
-#include "../inc/interrupt_handlers.h"
 
 // Set up the timer peripheral
 void setupTimer()
@@ -13,9 +12,6 @@ void setupTimer()
 
 	// Enable clock for timer
 	*CMU_HFPERCLKEN0 |= (1 << 6);
-
-	// Enable interrupt generation
-	*TIMER1_IEN = 1;
 }
 
 // Start the timer with the specified frequency

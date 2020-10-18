@@ -16,11 +16,6 @@ void setupGPIO()
 	*GPIO_PC_MODEL = 0x33333333;
 	// Enable internal pull-up for buttons
 	*GPIO_PC_DOUT = 0xff;
-
-	// Set interrupts for falling edge on buttons
-	*GPIO_EXTIPSELL = 0x22222222;
-	*GPIO_EXTIFALL = 0xff;
-	*GPIO_IEN = 0xff;
 }
 
 // Function called when buttons are pressed

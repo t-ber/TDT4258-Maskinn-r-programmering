@@ -19,7 +19,6 @@ void setupRTC()
 
     // Set up RTC
     *RTC_CTRL = 0b100; // Set top = COMP0
-    *RTC_IEN = 0b10; // Enable interrupt generation
 }
 
 // Start RTC timer with specified number of milliseconds

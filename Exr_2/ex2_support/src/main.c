@@ -83,7 +83,6 @@ void setupPolling()
 {
 	uint32_t buttonPushPrevious = *GPIO_PC_DIN;
 	buttonPushPrevious = buttonPushPrevious&0xff;
-	//buttonPushPrevious = buttonPushPrevious&0xff;
 	uint32_t prevTimer1Value = *TIMER1_CNT;
 	uint32_t prevRTCValue = *RTC_CNT;
 
@@ -133,6 +132,7 @@ void setupPolling()
 
 		prevTimer1Value = currentTimerValue;
 		prevRTCValue = currentRTCValue;
+	}
 
 }
 

@@ -1,7 +1,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#define   G4   4464
+#define   G3   4464
 #define   A3   3977
 #define   B3   3543
 #define   C4   3344

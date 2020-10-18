@@ -83,12 +83,14 @@ void setupNVIC()
 void setupPolling()
 {
 	uint32_t buttonPushPrevious = *GPIO_PC_DIN;
+	buttonPushPrevious = buttonPushPrevious&0xff;
 	//buttonPushPrevious = buttonPushPrevious&0xff;
 
 
 	while(1)
 	{
 		uint32_t buttonPushCurrent = *GPIO_PC_DIN;
+		buttonPushCurrent = buttonPushCurrent&0xff;
 		uint32_t buttonChange = buttonPushPrevious^buttonPushCurrent; //XOR previous and current
 		buttonChange = buttonChange&buttonPushPrevious; //Check which buttons have changed and were high at previous poll
 		buttonPushPrevious= buttonPushCurrent;

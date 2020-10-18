@@ -42,7 +42,7 @@ int main(void)
 	/*
 	 * Enable interrupt handling 
 	 */
-	setupNVIC();
+	
 	setupPolling();
 
 	//stopTimer();

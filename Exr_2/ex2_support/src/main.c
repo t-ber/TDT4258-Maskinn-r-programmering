@@ -59,7 +59,6 @@ int main(void)
 	 * TODO for higher energy efficiency, sleep while waiting for
 	 * interrupts instead of infinite loop for busy-waiting 
 	 */
-	while (1) ;
 
 	return 0;
 }
@@ -110,19 +109,19 @@ void setupPolling()
 		else if(prevTimer1Value>currentTimerValue)
 		{
 
-	static volatile uint16_t alternating_bool = 0;
+			static volatile uint16_t alternating_bool = 0;
 
-	if (alternating_bool == 0) {
-		alternating_bool = 1;
-		*DAC0_CH0DATA = AMPLITUDE;
-		*DAC0_CH1DATA = AMPLITUDE;
-		// turnOnLed();
-	} else {
-		alternating_bool = 0;
-		*DAC0_CH0DATA = 0;
-		*DAC0_CH1DATA = 0;
-		// turnOffLed();
-	}
+			if (alternating_bool == 0) {
+				alternating_bool = 1;
+				*DAC0_CH0DATA = AMPLITUDE;
+				*DAC0_CH1DATA = AMPLITUDE;
+				// turnOnLed();
+			}else {
+				alternating_bool = 0;
+				*DAC0_CH0DATA = 0;
+				*DAC0_CH1DATA = 0;
+				// turnOffLed();
+			}
 
 		}
 		else if(currentRTCValue>prevRTCValue)

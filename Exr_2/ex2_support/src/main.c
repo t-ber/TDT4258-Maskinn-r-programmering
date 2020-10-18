@@ -24,6 +24,7 @@
 // void setupTimer(uint32_t period);
 // void setupDAC();
 void setupNVIC();
+void setupPolling();
 
 /*
  * Your code will start executing here 
@@ -42,8 +43,9 @@ int main(void)
 	 * Enable interrupt handling 
 	 */
 	setupNVIC();
+	setupPolling();
 
-	stopTimer();
+	//stopTimer();
 
 	// turnOnLed();
 	// turnOffLed();
@@ -74,8 +76,35 @@ void setupNVIC()
 	 */
 
 	*ISER0 |= (1 << 12); // Timer1
-	*ISER0 |= 0x802; // GPIO
+	//*ISER0 |= 0x802; // GPIO
 	*ISER0 |= (1 << 30); // RTC
+}
+
+void setupPolling()
+{
+	uint32_t buttonPushPrevious = *GPIO_PC_DIN;
+	//buttonPushPrevious = buttonPushPrevious&0xff;
+
+
+	while(1)
+	{
+		uint32_t buttonPushCurrent = *GPIO_PC_DIN;
+		uint32_t buttonChange = buttonPushPrevious^buttonPushCurrent; //XOR previous and current
+		buttonChange = buttonChange&buttonPushPrevious; //Check which buttons have changed and were high at previous poll
+		buttonPushPrevious= buttonPushCurrent;
+
+		//If statements, handling music playing whenever correct buttons have changed. 
+		if((buttonChange&0x10) != 0x0)//Check button SW7
+		{
+			playLisa();
+		}
+		else if((buttonChange&0x20) != 0x0)//Check button SW6
+		{
+			playPirates();
+		}
+
+	
+
 }
 
 /*

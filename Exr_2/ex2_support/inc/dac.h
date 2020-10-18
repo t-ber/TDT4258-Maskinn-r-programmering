@@ -10,7 +10,10 @@ void setupDAC();
 void playNote(Note n);
 void onNoteCleared();
 
+void playCDE();
+void playImperial();
 void playLisa();
 void playPirates();
+void stopPlaying();
 
 #endif

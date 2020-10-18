@@ -22,6 +22,7 @@ void setupRTC()
 void startRTC(uint16_t ms)
 {
     *RTC_COMP0 = ms;
+    *RTC_CNT = 0;
     *RTC_CTRL |= 1;
 }
 

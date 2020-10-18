@@ -3,7 +3,7 @@
 
 #include "../inc/timer.h"
 #include "../inc/efm32gg.h"
-#include "../inc/interrupt_handlers.h"
+#include "../inc/polling.h"
 
 /*
  * function to setup the timer 
@@ -32,11 +32,13 @@ void setupTimer(uint16_t period)
 
 void setTimerTop(uint16_t top)
 {
+	*SCR = 2; // Regular sleep mode
 	*TIMER1_TOP = top;
 	*TIMER1_CMD = 0b01;
 }
 
 void stopTimer()
 {
+	*SCR = 6; // Deep sleep mode
 	*TIMER1_CMD = 0b10;
 }

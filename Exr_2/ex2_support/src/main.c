@@ -85,10 +85,12 @@ void setupPolling()
 	uint32_t buttonPushPrevious = *GPIO_PC_DIN;
 	buttonPushPrevious = buttonPushPrevious&0xff;
 	//buttonPushPrevious = buttonPushPrevious&0xff;
-	uint32_t prevTimerValue = *TIMER1_CNT;
+	uint32_t prevTimer1Value = *TIMER1_CNT;
+	uint32_t prevRTCValue = *RTC_CNT;
 
 	while(1)
 	{
+		uint32_t currentRTCValue = *RTC_CNT;
 		uint32_t currentTimerValue = *TIMER1_CNT;
 		uint32_t buttonPushCurrent = *GPIO_PC_DIN;
 		buttonPushCurrent = buttonPushCurrent&0xff;
@@ -105,7 +107,7 @@ void setupPolling()
 		{
 			playPirates();
 		}
-		else if(prevTimerValue>currentTimerValue)
+		else if(prevTimer1Value>currentTimerValue)
 		{
 
 	static volatile uint16_t alternating_bool = 0;
@@ -123,8 +125,10 @@ void setupPolling()
 	}
 
 		}
+		else if()
 
-		uint32_t prevTimerValue = currentTimerValue;
+		prevTimer1Value = currentTimerValue;
+		prevRTCValue = currentRTCValue;
 
 }
 

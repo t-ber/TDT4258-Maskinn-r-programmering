@@ -3,7 +3,7 @@
 
 #include "../inc/timer.h"
 #include "../inc/efm32gg.h"
-#include "../inc/interrupt_handlers.h"
+#include "../inc/polling.h"
 
 /*
  * function to setup the timer 

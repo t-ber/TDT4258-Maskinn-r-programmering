@@ -125,7 +125,12 @@ void setupPolling()
 	}
 
 		}
-		else if()
+		else if(currentRTCValue>prevRTCValue)
+		{
+			clearRTC();
+			stopTimer();
+			onNoteCleared();
+		}
 
 		prevTimer1Value = currentTimerValue;
 		prevRTCValue = currentRTCValue;

@@ -7,4 +7,6 @@ void __attribute__ ((interrupt)) GPIO_EVEN_IRQHandler();
 
 void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler();
 
+void __attribute__ ((interrupt)) RTC_IRQHandler();
+
 #endif

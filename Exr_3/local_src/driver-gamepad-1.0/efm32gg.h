@@ -1,4 +1,7 @@
-#include <stdint.h>
+#ifndef EFM32GG_H
+#define EFM32GG_H
+
+#include <linux/types.h>
 
 // GPIO
 
@@ -141,3 +144,4 @@
 #define SYSTICK_CTRL ((volatile uint32_t*)0xe000e010)
 #define SYSTICK_LOAD ((volatile uint32_t*)0xe000e014)
 
+#endif

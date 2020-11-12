@@ -13,7 +13,7 @@ struct gamepad_dev {
 	struct resource *gpio;
 	struct fasync_struct *async_queue;
 	uint8_t button_status;
-}
+};
 
 irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs regs*);
 

@@ -35,6 +35,28 @@ struct file_operations gamepad_fops = {
 };
 
 /*
+ *
+ *		INTERRUPT HANDLER 
+ * 
+ */
+
+irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs *regs)
+{
+	// Write the pressed buttons to the button status variable
+	dev->button_status = ioread32(GPIO_IF);
+
+	// Clear interrupt flags
+	iowrite32(0xff, GPIO_IFC);
+
+	// Notify user application(s) through async signal
+	if (dev->async_queue) {
+		kill_fasync(&dev->async_queue, SIGIO, POLL_IN);
+	}
+
+	return IRQHANDLED;
+}
+
+/*
  * template_init - function to insert this module into kernel space
  *
  * This is the first of two exported functions to handle inserting this
@@ -49,23 +71,23 @@ static int __init gamepad_init(void)
 	int err = alloc_chrdev_region(&dev->devno, 0, 1 DRIVER_NAME);
 
 	if (err < 0) {
-		printk(KERN_WARNING "gamepad_driver: can't get major number\n");
+		printk("gamepad_driver: can't get major number\n");
 		return err;
 	}
 
 	// Register device
 	cdev_init(&dev->cdev, &gamepad_fops);
 	dev->cdev.owner = THIS_MODULE;
-	err = cdev_add(&dev->cdev, &dev->devno, 1);
+	err = cdev_add(&dev->cdev, dev->devno, 1);
 
 	if (err < 0) {
-		printk(KERN_NOTICE "Error %d adding gamepad.", err);
+		printk("Error %d adding gamepad.", err);
 		return err;
 	}
 
 	// Make device visible
 	dev->cl = class_create(THIS_MODULE, DRIVER_NAME);
-	device_create(cl, NULL, dev->devno, NULL, DRIVER_NAME);
+	device_create(dev->cl, NULL, dev->devno, NULL, DRIVER_NAME);
 
 	// Allocate the GPIO part of memory
 	dev->gpio = request_mem_region(GPIO_PA_BASE, GPIO_IFC - GPIO_PA_BASE, DRIVER_NAME);
@@ -79,13 +101,13 @@ static int __init gamepad_init(void)
 	iowrite32(0xff, GPIO_PC_DOUT);
 
 	// Request interrupt lines for even and odd gpio interrupt
-	request_irq(IRQ_NUM_GPIO_EVEN, GPIO_IRQHandler, 0, DRIVER_NAME, &dev->cdev);
-	request_irq(IRQ_NUM_GPIO_ODD, GPIO_IRQHandler, 0, DRIVER_NAME, &dev->cdev);
+	request_irq(IRQ_NUM_GPIO_EVEN, (irq_handler_t) GPIO_IRQHandler, 0, DRIVER_NAME, &dev->cdev);
+	request_irq(IRQ_NUM_GPIO_ODD, (irq_handler_t) GPIO_IRQHandler, 0, DRIVER_NAME, &dev->cdev);
 
 	// Enable GPIO interrupt generation, like in previous exercises
 	iowrite32(0x22222222, GPIO_EXTIPSELL);
 	iowrite32(0xff, GPIO_EXTIFALL);
-	iowrite(0xff, GPIO_IEN);
+	iowrite32(0xff, GPIO_IEN);
 
 	// Initialize button_status
 	dev->button_status = 0x00;
@@ -105,14 +127,14 @@ static void __exit gamepad_cleanup(void)
 {
 	// Undo allocations from init, reverse order
 	// Release interrupt lines
-	free_irq(IRQ_NUM_GPIO_EVEN, dev->cdev);
-	free_irq(IRQ_NUM_GPIO_ODD, dev->cdev);
+	free_irq(IRQ_NUM_GPIO_EVEN, &dev->cdev);
+	free_irq(IRQ_NUM_GPIO_ODD, &dev->cdev);
 
 	// Release GPIO memory region
 	release_mem_region(GPIO_PA_BASE, GPIO_IFC - GPIO_PA_BASE);
 
 	// Delete cdev
-	cdev_del(dev->cdev);
+	cdev_del(&dev->cdev);
 
 	// Unregister major and minor numbers
 	unregister_chrdev_region(dev->devno, 1);
@@ -160,26 +182,6 @@ static int gamepad_fasync(int fd, struct file *filp, int mode)
 {
 	// Register user application for async signals
 	return fasync_helper(fd, filp, mode, &dev->async_queue);
-}
-
-/*
- *	Interrupt handler
- */
-
-irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs regs*)
-{
-	// Write the pressed buttons to the button status variable
-	dev->button_status = ioread32(GPIO_IF);
-
-	// Clear interrupt flags
-	iowrite32(0xff, GPIO_IFC);
-
-	// Notify user application(s) through async signal
-	if (dev->async_queue) {
-		kill_fasync(&dev->async_queue, SIGIO, POLL_IN);
-	}
-
-	return IRQHANDLED;
 }
 
 

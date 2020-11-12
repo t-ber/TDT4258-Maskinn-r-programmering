@@ -42,10 +42,10 @@ struct gamepad_dev *dev;
 irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs regs*);
 
 // Deklarerer fops funksjoner
-ssize_t gamepad_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos);
-ssize_t gamepad_write(struct file *filp, const char __user *buf, size_t count, loff_t *offp);
-int gamepad_open(struct inode *inode, struct file *filp);
-int gamepad_release(struct inode *inode, struct file *filp);
+static ssize_t gamepad_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos);
+static ssize_t gamepad_write(struct file *filp, const char __user *buf, size_t count, loff_t *offp);
+static int gamepad_open(struct inode *inode, struct file *filp);
+static int gamepad_release(struct inode *inode, struct file *filp);
 static int gamepad_fasync(int fd, struct file *filp, int mode);
 
 struct file_operations gamepad_fops = {
@@ -147,14 +147,14 @@ static void __exit gamepad_cleanup(void)
  *	file op functions
  */
 
-int gamepad_open(struct inode *inode, struct file *filp)
+static int gamepad_open(struct inode *inode, struct file *filp)
 {
 	// We don't do anything here
 	printk("Gamepad driver opened.");
 	return 0;
 }
 
-int gamepad_release(struct inode *inode, struct file *filp)
+static int gamepad_release(struct inode *inode, struct file *filp)
 {
 	// remove from async queue (signals)
 	gamepad_fasync(-1, filp, 0);
@@ -165,7 +165,7 @@ int gamepad_release(struct inode *inode, struct file *filp)
 
 // Sender et 8 bits tall som viser hvilke knapper som har vært trykket siden sist
 // Alternativ: vise hvilke knapper som er trykket nå
-ssize_t gamepad_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+static ssize_t gamepad_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
 {
 	// We send the status of the buttons to the user application
 	copy_to_user(buf, &dev->button_status, 1);
@@ -178,7 +178,7 @@ ssize_t gamepad_read(struct file *filp, char __user *buf, size_t count, loff_t *
 	return 1;
 }
 
-ssize_t gamepad_write(struct file *filp, const char __user *buf, size_t count, loff_t *offp)
+static ssize_t gamepad_write(struct file *filp, const char __user *buf, size_t count, loff_t *offp)
 {
 	// The driver has no write functionality
 	return 0;

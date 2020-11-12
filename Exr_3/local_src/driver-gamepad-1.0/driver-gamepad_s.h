@@ -1,5 +1,5 @@
-#ifndef DRIVER_GAMEPAD_H
-#define DRIVER_GAMEPAD_H
+#ifndef DRIVER_GAMEPAD_S_H
+#define DRIVER_GAMEPAD_S_H
 
 #define DRIVER_NAME "gamepad_driver"
 

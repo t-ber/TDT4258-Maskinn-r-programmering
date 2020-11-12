@@ -19,7 +19,7 @@
 #include <linux/ioport.h>
 #include <linux/interrupt.h>
 
-#include "driver-gamepad.h"
+#include "driver-gamepad_s.h"
 #include "efm32gg.h"
 
 

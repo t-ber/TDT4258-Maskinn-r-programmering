@@ -163,17 +163,12 @@ static int gamepad_release(struct inode *inode, struct file *filp)
 	return 0;
 }
 
-// Sender et 8 bits tall som viser hvilke knapper som har vært trykket siden sist
+// Sender et 8 bits tall som viser hvilke knapper som ble trykket sist
 // Alternativ: vise hvilke knapper som er trykket nå
 static ssize_t gamepad_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
 {
 	// We send the status of the buttons to the user application
 	copy_to_user(buf, &dev->button_status, 1);
-
-	// Clear the buttons_status variable
-	// NB! This would be a problem if there was several user applications using the driver
-	// In that case, we would have to make use of filp->private_data
-	dev->button_status = 0x00;
 
 	return 1;
 }
@@ -197,7 +192,7 @@ static int gamepad_fasync(int fd, struct file *filp, int mode)
 irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs regs*)
 {
 	// Write the pressed buttons to the button status variable
-	dev->button_status |= ioread32(GPIO_IF);
+	dev->button_status = ioread32(GPIO_IF);
 
 	// Clear interrupt flags
 	iowrite32(0xff, GPIO_IFC);

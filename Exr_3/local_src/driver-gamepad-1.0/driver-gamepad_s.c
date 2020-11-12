@@ -22,8 +22,7 @@
 #include <linux/signal.h>
 #include <asm/siginfo.h>
 
-
-#include "driver-gamepad_s.h"
+#include "driver-gamepad.h"
 #include "efm32gg.h"
 
 

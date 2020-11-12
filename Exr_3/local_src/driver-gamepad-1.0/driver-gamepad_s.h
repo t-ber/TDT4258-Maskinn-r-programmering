@@ -3,6 +3,8 @@
 
 #define DRIVER_NAME "gamepad_driver"
 
+#define GPIO_MEM_SIZE 0x120
+
 #define IRQ_NUM_GPIO_EVEN 17
 #define IRQ_NUM_GPIO_ODD 18
 
@@ -15,7 +17,7 @@ struct gamepad_dev {
 	uint8_t button_status;
 };
 
-irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs regs*);
+irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs *regs);
 
 static ssize_t gamepad_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos);
 static ssize_t gamepad_write(struct file *filp, const char __user *buf, size_t count, loff_t *offp);

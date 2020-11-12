@@ -18,6 +18,10 @@
 #include <asm/io.h>
 #include <linux/ioport.h>
 #include <linux/interrupt.h>
+#include <asm/signal.h>
+#include <linux/signal.h>
+#include <asm/siginfo.h>
+
 
 #include "driver-gamepad_s.h"
 #include "efm32gg.h"
@@ -53,7 +57,7 @@ irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs *regs)
 		kill_fasync(&dev->async_queue, SIGIO, POLL_IN);
 	}
 
-	return IRQHANDLED;
+	return IRQ_HANDLED;
 }
 
 /*
@@ -68,7 +72,7 @@ irqreturn_t GPIO_IRQHandler(int irq, void *dev_id, struct pt_regs *regs)
 static int __init gamepad_init(void)
 {
 	// Allocate major and minor numbers
-	int err = alloc_chrdev_region(&dev->devno, 0, 1 DRIVER_NAME);
+	int err = alloc_chrdev_region(&dev->devno, 0, 1, DRIVER_NAME);
 
 	if (err < 0) {
 		printk("gamepad_driver: can't get major number\n");
@@ -90,7 +94,7 @@ static int __init gamepad_init(void)
 	device_create(dev->cl, NULL, dev->devno, NULL, DRIVER_NAME);
 
 	// Allocate the GPIO part of memory
-	dev->gpio = request_mem_region(GPIO_PA_BASE, GPIO_IFC - GPIO_PA_BASE, DRIVER_NAME);
+	dev->gpio = request_mem_region(GPIO_PA_BASE, GPIO_MEM_SIZE, DRIVER_NAME);
 
 	if (dev->gpio != NULL) {
 		printk("GPIO memory allocated to gamepad_driver.");
@@ -131,7 +135,7 @@ static void __exit gamepad_cleanup(void)
 	free_irq(IRQ_NUM_GPIO_ODD, &dev->cdev);
 
 	// Release GPIO memory region
-	release_mem_region(GPIO_PA_BASE, GPIO_IFC - GPIO_PA_BASE);
+	release_mem_region(GPIO_PA_BASE, GPIO_MEM_SIZE);
 
 	// Delete cdev
 	cdev_del(&dev->cdev);

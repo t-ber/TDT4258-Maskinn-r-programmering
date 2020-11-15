@@ -7,8 +7,8 @@
 #include <fcntl.h>
 #include <linux/flags.h>
 
-#include "../inc/read-buttons.h"
-#include "../inc/snake.h"
+#include "read-buttons.h"
+#include "snake.h"
 
 static FILE *driver_file;
 

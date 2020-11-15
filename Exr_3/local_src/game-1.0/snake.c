@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "snake.h"
 #include "framebuffer.h"
@@ -252,7 +253,7 @@ void run_game()
     while (snake.alive == 1) {
         move_snake();
         draw_screen();
-        sleep(1);
+        usleep(100000);
     }
 }
 

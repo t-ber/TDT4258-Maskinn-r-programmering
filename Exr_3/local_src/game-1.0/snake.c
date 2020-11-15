@@ -65,6 +65,8 @@ void snake_is_dead() {
             return;
         }
     }
+
+    printf("snake: snake is dead.");
 }
 
 void update_snake_head_position() {
@@ -250,6 +252,7 @@ void snake_reset()
 
 void run_game()
 {
+    snake_reset();
     snake.alive = true;
 
     while (snake.alive) {

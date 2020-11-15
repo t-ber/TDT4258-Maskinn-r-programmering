@@ -6,7 +6,7 @@
 
 static struct Snake snake;
 
-void on_button_press(char button) {
+void on_button_pressed(char button) {
     switch (button)
     {
         case 'd':

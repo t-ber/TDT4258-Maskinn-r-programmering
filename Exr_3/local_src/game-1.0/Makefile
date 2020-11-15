@@ -10,7 +10,7 @@ CFLAGS += -O2 -g -Wall #-Wsign-compare -Wfloat-equal -Wformat-security #-Werror
 CPPFLAGS +=
 LDFLAGS +=
 
-OBJECTS = snake.o framebuffer.o read-buttons
+OBJECTS = snake.o framebuffer.o read-buttons.o
 
 all: game
 

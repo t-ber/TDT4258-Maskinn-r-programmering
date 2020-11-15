@@ -5,7 +5,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <linux/flags.h>
 
 #include "read-buttons.h"
 #include "snake.h"

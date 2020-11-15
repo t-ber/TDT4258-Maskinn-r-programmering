@@ -13,14 +13,5 @@ int main(int argc, char *argv[])
 	setup_driver();
 	snake_reset();
 
-
-	/*while(1){
-		move_snake();
-		if(!snake.alive){
-			printf("Dead");
-			break;
-		}
-		sleep();
-	}
-	exit(EXIT_SUCCESS);*/
+	return 0;
 }

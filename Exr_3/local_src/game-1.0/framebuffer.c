@@ -1,3 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <linux/fb.h>
+#include <sys/ioctl.h>
+
 #include "framebuffer.h"
 
 int fbfd;

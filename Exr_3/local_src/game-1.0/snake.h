@@ -1,12 +1,6 @@
 #ifndef SNAKE_H
 #define SNAKE_H
 
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <unistd.h> //for sleep
-#include <stdlib.h> //for rand
-
 #define BOARD_SIZE_X 32
 #define BOARD_SIZE_Y 24
 #define BOARD_SIZE 768

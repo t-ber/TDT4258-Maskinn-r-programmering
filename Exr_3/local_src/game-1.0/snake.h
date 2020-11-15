@@ -58,7 +58,7 @@ void move_snake();
 // void print_board(char *board, int y_size, int x_size);
 
 /*Handles a button press*/
-void snake_button_press(char button);
+void on_button_press(char button);
 
 /*Draws an apple on the screen*/
 void draw_apple();

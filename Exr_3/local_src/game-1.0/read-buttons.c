@@ -42,22 +42,22 @@ void signal_handler(int sig)
         uint8_t button_status = (uint8_t) getc(driver_file);
         char button = (char) 0;
 
-        if (button_status & 0x01 && snake_1.direction != 'R') {
+        if (button_status & 0x01) {
             printf("game: button L pressed.\n");
             button = 'L';
         }
 
-        else if (button_status & 0x02 && snake_1.direction != 'D') {
+        else if (button_status & 0x02) {
             printf("game: button U pressed.\n");
             button = 'U';
         }
 
-        else if (button_status & 0x04 && snake_1.direction != 'L') {
+        else if (button_status & 0x04) {
             printf("game: button R pressed.\n");
             button = 'R';
         }
 
-        else if (button_status & 0x08 && snake_1.direction != 'U') {
+        else if (button_status & 0x08) {
             printf("game: button D pressed.\n");
             button = 'D';
         }

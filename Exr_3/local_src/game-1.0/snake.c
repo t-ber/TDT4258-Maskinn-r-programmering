@@ -6,18 +6,44 @@
 
 static struct Snake snake;
 
-void on_button_press(char button){
-    if(button == 'd'){
-        if (snake.alive == 1) {
-            stop_game();
-        }
-        else {
-            run_game();
-        }
-    }
+void on_button_press(char button) {
+    switch (button)
+    {
+        case 'd':
+            if (snake.alive == 1) {
+                stop_game();
+            }
+            else {
+                run_game();
+            }
+            break;
 
-    else{
-        snake.next_direction = button;
+        case 'L':
+            if (snake.direction != 'R') {
+                snake.next_direction = 'L';
+            }
+            break;
+
+        case 'U':
+            if (snake.direction != 'D') {
+                snake.next_direction = 'U';
+            }
+            break;
+        
+        case 'R':
+            if (snake.direction != 'L') {
+                snake.next_direction = 'R';
+            }
+            break;
+        
+        case 'D':
+            if (snake.direction != 'U') {
+                snake.next_direction = 'D';
+            }
+            break;
+        
+        default:
+            break;
     }
 }
 

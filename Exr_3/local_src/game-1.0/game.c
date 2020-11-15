@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "framebuffer.h"
+#include "snake.h"
+#include "read-buttons.h"
+
 int main(int argc, char *argv[])
 {
 

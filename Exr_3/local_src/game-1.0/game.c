@@ -12,10 +12,7 @@ int main(int argc, char *argv[])
 	initialize_screen();
 	setup_driver();
 
-	/* int pres = -1;
-	while (pres == -1) {
-		pres = pause();
-	} */
+	run_game();
 
 	return 0;
 }

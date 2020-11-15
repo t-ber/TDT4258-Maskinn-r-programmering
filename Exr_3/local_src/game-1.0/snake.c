@@ -180,8 +180,6 @@ void move_snake() {
     head_pos_to_array_pos();
     snake_is_dead();
     eat(last_tail_pos);
-
-    printf("y pos of head: %i\n", snake.body[0]/snake.board_size_x);
 }
 
 // void print_board(char *board, int y_size, int x_size){
@@ -260,6 +258,13 @@ void run_game()
         draw_screen();
         usleep(100000);
     }
+
+    printf("snake.x_pos: %i\n", snake.x_pos);
+    printf("snake.y_pos: %i\n", snake.y_pos);
+    printf("snake.apple_pos: %i\n", snake.apple_pos);
+    printf("snake.tail_indx: %i\n", snake.tail_indx);
+    printf("snake.body[0]: %i\n", snake.body[0]);
+    printf("snake.body[1]: %i\n", snake.body[1]);
 }
 
 void stop_game()

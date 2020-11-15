@@ -172,7 +172,7 @@ void eat(uint8_t last_tail_pos){
 
 void move_snake() {
     snake.direction = snake.next_direction;
-    uint8_t last_tail_pos = snake.body[snake.tail_indx];
+    uint32_t last_tail_pos = snake.body[snake.tail_indx];
     update_snake_body_pos();
     update_snake_head_position();
     head_pos_to_array_pos();

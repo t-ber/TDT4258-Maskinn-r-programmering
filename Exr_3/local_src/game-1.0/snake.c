@@ -10,35 +10,39 @@ static struct Snake snake;
 void on_button_pressed(char button) {
     switch (button)
     {
-        case 'd':
-            if (snake.alive) {
+        case 'u':
+            if (snake.game_running) {
                 stop_game();
             }
-            else {
-                run_game();
+            else if (snake.alive) {
+                start_game();
             }
             break;
 
+        case 'd':
+            snake_reset();
+            break;
+
         case 'L':
-            if (snake.direction != 'R') {
+            if (snake.alive && snake.direction != 'R') {
                 snake.next_direction = 'L';
             }
             break;
 
         case 'U':
-            if (snake.direction != 'D') {
+            if (snake.alive && snake.direction != 'D') {
                 snake.next_direction = 'U';
             }
             break;
         
         case 'R':
-            if (snake.direction != 'L') {
+            if (snake.alive && snake.direction != 'L') {
                 snake.next_direction = 'R';
             }
             break;
         
         case 'D':
-            if (snake.direction != 'U') {
+            if (snake.alive && snake.direction != 'U') {
                 snake.next_direction = 'D';
             }
             break;
@@ -59,14 +63,13 @@ void snake_is_dead() {
     }
     
     int i;
-    for (i = 1; i < sizeof(snake.body); i++) {
+    for (i = 1; i < SNAKE_MAX_LENGTH; i++) {
         if (snake.body[0] == snake.body[i]) {
             snake.alive = false;
             return;
         }
     }
 
-    printf("snake: snake is dead.");
 }
 
 void update_snake_head_position() {
@@ -93,11 +96,10 @@ void update_snake_head_position() {
 
 void update_snake_body_pos() {
     int i;
-    for (i = 1; i < 20; i++){
-        if (snake.body[i] != -1) 
+    for (i = snake.tail_indx; i > 0; i--) {
+        if (snake.body[i] != -1) {
             snake.body[i] = snake.body[i - 1];
-        else
-            return;
+        }
     }
     return;
 }
@@ -119,12 +121,13 @@ void spawn_apple() {
     while(1){
         apple_pos = rand() % board_size;
         int i;
-        for (i = 0; i < sizeof(snake.body); i++){
-            if (snake.body[i] == apple_pos)
+        for (i = 0; i <= snake.tail_indx; i++) {
+            if (snake.body[i] == apple_pos) {
                 apple_pos = -1;
                 break;
+            }
         }
-        if (apple_pos != -1){
+        if (apple_pos != -1) {
             snake.apple_pos = apple_pos;
             return;
         }
@@ -157,19 +160,14 @@ void spawn_apple() {
     } 
 } */
 
-void eat(uint8_t last_tail_pos){
+void eat(uint32_t last_tail_pos) {
     if (snake.body[0] == snake.apple_pos) {
-        int i;
-        for (i = 0; i < sizeof(snake.body); i++) {
-            if (snake.body[i] == -1){
-                snake.body[i] = last_tail_pos;
-                snake.tail_indx++;
-                spawn_apple();
-                return;
-            }
+        if (snake.tail_indx < SNAKE_MAX_LENGTH - 1) {
+            snake.tail_indx++;
+            snake.body[snake.tail_indx] = last_tail_pos;
         }
+        spawn_apple();
     }
-    return;
 }
 
 void move_snake() {
@@ -220,7 +218,12 @@ void draw_screen(){
     while (snake.body[j] != -1) {
         int x_pos = (snake.body[j]%snake.board_size_x) * BLOCK_SIZE;
         int y_pos = (snake.body[j]/snake.board_size_x) * BLOCK_SIZE;
-        draw_square(x_pos,y_pos, 1);
+        if (j == 0) {
+            draw_square(x_pos,y_pos, 3);
+        }
+        else {
+            draw_square(x_pos,y_pos, 1);
+        }
         j++;
     }
     draw_apple();
@@ -234,14 +237,15 @@ void snake_reset()
     snake.x_pos = 0;
     snake.y_pos = 0;
     snake.tail_indx = 0;
-    snake.alive = false;
+    snake.alive = true;
+    snake.game_running = false;
     snake.apple_pos = 200;
     snake.direction = 'D';
     snake.next_direction = 'D';
 
     snake.body[0] = 0;
     int i;
-    for (i = 1; i < 20; i++) {
+    for (i = 1; i < SNAKE_MAX_LENGTH; i++) {
         snake.body[i] = -1;
     }
 
@@ -250,28 +254,28 @@ void snake_reset()
 
 void run_game()
 {
-    snake_reset();
-    snake.alive = true;
-
-    while (snake.alive) {
-        move_snake();
-        draw_screen();
-        usleep(100000);
+    if (!snake.game_running) {
+        return;
     }
 
-    printf("snake.x_pos: %i\n", snake.x_pos);
-    printf("snake.y_pos: %i\n", snake.y_pos);
-    printf("snake.apple_pos: %i\n", snake.apple_pos);
-    printf("snake.tail_indx: %i\n", snake.tail_indx);
-    printf("snake.body[0]: %i\n", snake.body[0]);
-    printf("snake.body[1]: %i\n", snake.body[1]);
+    while (snake.game_running && snake.alive) {
+        move_snake();
+        draw_screen();
+        usleep(SNAKE_INTERVAL);
+    }
+
+    printf("snake: snake is dead.\n");
 }
 
 void stop_game()
 {
-    snake.alive = false;
+    snake.game_running = false;
 }
 
+void start_game()
+{
+    snake.game_running = true;
+}
 
 /* void example_with_setup() {
     int board_x = 32;

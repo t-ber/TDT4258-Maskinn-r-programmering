@@ -11,15 +11,19 @@
 #define BOARD_SIZE_Y 24
 #define BOARD_SIZE 768
 
+#define SNAKE_MAX_LENGTH 768
+#define SNAKE_INTERVAL 50000 // microseconds
+
 struct Snake
 {   
     uint8_t board_size_x;
     uint8_t board_size_y;
-    uint8_t x_pos;
-    uint8_t y_pos;
-    uint8_t tail_indx;
-    uint32_t body[20];
+    int8_t x_pos;
+    int8_t y_pos;
+    uint16_t tail_indx;
+    uint32_t body[SNAKE_MAX_LENGTH];
     bool alive;
+    bool game_running;
     uint32_t apple_pos;
     char direction;
     char next_direction;
@@ -50,7 +54,7 @@ void spawn_apple();
 // void clear_board(char *board, int board_size);
 
 /*Checks if the snake is eating an apple, if so adds new tail part*/
-void eat(uint8_t last_tail_pos);
+void eat(uint32_t last_tail_pos);
 
 /*One iteration of moving the snake one space and interacting with the boardstate*/
 void move_snake();
@@ -72,5 +76,8 @@ void run_game();
 
 /* Stops the game */
 void stop_game();
+
+/* Starts the game */
+void start_game();
 
 #endif

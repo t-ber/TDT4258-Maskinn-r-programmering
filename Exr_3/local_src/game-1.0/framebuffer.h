@@ -10,9 +10,10 @@
 #include <sys/ioctl.h>
 
 
-#define BLACK	0x0000
-#define GREEN	0x37E0
-#define RED		0xF800
+#define BLACK       0b0000000000000000
+#define GREEN       0b0000011111100000
+#define DARK_GREEN  0b0000011001100000
+#define RED	        0b1111100000000000
 
 #define BLOCK_SIZE 10
 

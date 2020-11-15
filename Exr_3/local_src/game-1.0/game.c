@@ -11,8 +11,12 @@ int main(int argc, char *argv[])
 	printf("Hello World, I'm game!\n");
 	initialize_screen();
 	setup_driver();
+	snake_reset();
 
-	run_game();
+	while (true) {
+		pause();
+		run_game();
+	}
 
 	return 0;
 }

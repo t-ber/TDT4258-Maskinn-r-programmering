@@ -61,6 +61,11 @@ void signal_handler(int sig)
             button = 'D';
         }
 
+        else if (button_status & 0x20) {
+            printf("game: button u pressed\n");
+            button = 'u';
+        }
+
 		else if (button_status & 0x80) {
 			printf("game: button d pressed.\n");
             button = 'd';

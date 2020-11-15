@@ -8,7 +8,7 @@ int j;
 int screensize;
 uint16_t* screen;
 struct fb_copyarea rect;
-static uint16_t colors[] = {BLACK, GREEN, RED};
+static uint16_t colors[] = {BLACK, GREEN, RED, DARK_GREEN};
 
 
 int initialize_screen()

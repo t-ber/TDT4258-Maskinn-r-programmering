@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include "snake.h"
+#include "framebuffer.h"
 
 static struct Snake snake;
 
@@ -190,6 +191,7 @@ void draw_screen(){
         j++;
     }
     draw_apple();
+    update_screen();
 }
 
 void snake_reset()

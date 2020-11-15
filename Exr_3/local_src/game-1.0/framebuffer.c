@@ -49,7 +49,6 @@ int initialize_screen()
 
 void clear_screen()
 {
-	printf("clear screen\n");
 	munmap(screen, screensize);
 	close(fbfd);
 }
@@ -71,20 +70,12 @@ void update_screen()
 
 void draw_square(int pos_x, int pos_y, int color_val)
 {
-	printf("draw test\n");
-	printf("screen size: %i", screensize);
 	for(i=0; i<BLOCK_SIZE;i++)
 	{
 		for(j=0; j<BLOCK_SIZE; j++)
 		{
-			printf("i: %i\n", i);
-			printf("j: %i\n", j);
-			printf("pixel:  %i\n", j+i*rect.width);
-			
 			screen[pos_x+j+(i+pos_y)*rect.width] = colors[color_val];
 		}
-	
-
 	}
 
 }

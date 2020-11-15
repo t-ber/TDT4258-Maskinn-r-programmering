@@ -214,9 +214,9 @@ void draw_apple()
 void draw_screen(){
     blackout_screen();
     int j = 0;
-    while(snake.body[j]!=-1){
-        int x_pos = snake.body[j]%snake.board_size_x;
-        int y_pos = (snake.body[j]-x_pos)/snake.board_size_x;
+    while (snake.body[j] != -1) {
+        int x_pos = (snake.body[j]%snake.board_size_x) * BLOCK_SIZE;
+        int y_pos = ((snake.body[j]-x_pos)/snake.board_size_x) * BLOCK_SIZE;
         draw_square(x_pos,y_pos, 1);
         j++;
     }

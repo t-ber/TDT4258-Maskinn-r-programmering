@@ -15,7 +15,7 @@ void setup_driver()
 {
     // Open driver
 
-    driver_file = fopen("dev/gamepad-driver", "rb");
+    driver_file = fopen("/dev/gamepad_driver", "rb");
 
     if ( driver_file == NULL ) {
         printf("game: error opening gamepad-driver.\n");

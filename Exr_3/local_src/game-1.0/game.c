@@ -13,5 +13,10 @@ int main(int argc, char *argv[])
 	setup_driver();
 	snake_reset();
 
+	int pres = -1;
+	while (pres == -1) {
+		pres = pause();
+	}
+
 	return 0;
 }

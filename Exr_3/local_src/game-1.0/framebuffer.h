@@ -18,8 +18,9 @@
 
 
 
-int initialize_screen()
-void clear_screen()
-void update_screen()
-void draw_square(int pos_x, int pos_y, int color_val)
-void draw_test(int pos_x, int pos_y)
+int initialize_screen();
+void clear_screen();
+void blackout_screen();
+void update_screen();
+void draw_square(int pos_x, int pos_y, int color_val);
+void draw_test(int pos_x, int pos_y);

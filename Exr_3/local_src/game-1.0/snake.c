@@ -1,4 +1,6 @@
 #include <stdbool.h>
+#include <time.h>
+
 #include "snake.h"
 #include "framebuffer.h"
 
@@ -6,7 +8,7 @@ static struct Snake snake;
 
 void on_button_press(char button){
     if(button == 'd'){
-        if (snake.alaive == 1) {
+        if (snake.alive == 1) {
             stop_game();
         }
         else {
@@ -22,17 +24,18 @@ void on_button_press(char button){
 void snake_is_dead() {
     if (snake.x_pos == snake.board_size_x || snake.y_pos == snake.board_size_y){
         snake.alive = 0;
-        return snake;
+        return;
     }
     if (snake.x_pos < 0 || snake.y_pos < 0){
         snake.alive = 0;
-        return snake;
+        return;
     }
     
-    for (int i = 1; i < sizeof(snake.body); i++){
-        if (snake.body[0] == snake.body[i]){
+    int i;
+    for (i = 1; i < sizeof(snake.body); i++) {
+        if (snake.body[0] == snake.body[i]) {
             snake.alive = 0;
-            return snake;
+            return;
         }
     }
 }
@@ -60,19 +63,20 @@ void update_snake_head_position() {
 }
 
 void update_snake_body_pos() {
-    for (int i = 1; i < 20; i++){
+    int i;
+    for (i = 1; i < 20; i++){
         if (snake.body[i] != -1) 
             snake.body[i] = snake.body[i - 1];
         else
-            return snake;
+            return;
     }
-    return snake;
+    return;
 }
 
 void head_pos_to_array_pos() {
     int array_pos = snake.x_pos + snake.y_pos*snake.board_size_x;
     snake.body[0] = array_pos;
-    return snake;
+    return;
 }
 
 void spawn_apple() {
@@ -85,14 +89,15 @@ void spawn_apple() {
     int board_size = snake.board_size_x*snake.board_size_y;
     while(1){
         apple_pos = rand() % board_size;
-        for (int i = 0; i < sizeof(snake.body); i++){
+        int i;
+        for (i = 0; i < sizeof(snake.body); i++){
             if (snake.body[i] == apple_pos)
                 apple_pos = -1;
                 break;
         }
         if (apple_pos != -1){
             snake.apple_pos = apple_pos;
-            return snake;
+            return;
         }
     }
    
@@ -124,8 +129,9 @@ void spawn_apple() {
 } */
 
 void eat(uint8_t last_tail_pos){
-    if (snake.body[0] == snake.apple_pos){
-        for (int i = 0; i < sizeof(snake.body); i++){
+    if (snake.body[0] == snake.apple_pos) {
+        int i;
+        for (i = 0; i < sizeof(snake.body); i++) {
             if (snake.body[i] == -1){
                 snake.body[i] = last_tail_pos;
                 snake.tail_indx++;
@@ -147,17 +153,18 @@ void move_snake() {
     eat(last_tail_pos);
 }
 
-void print_board(char *board, int y_size, int x_size){
-    
-    for (int i = 0; i < y_size; i++){
-        for (int j = 0; j < x_size; j++){
-            int pos = j + x_size*i;
-            printf("[%c]", board[pos]);
-        }
-        printf("\n");
-    }
-    printf("\033[5A");
-}
+// void print_board(char *board, int y_size, int x_size){
+//     int i;
+//     int j;
+//     for (i = 0; i < y_size; i++){
+//         for (j = 0; j < x_size; j++){
+//             int pos = j + x_size*i;
+//             printf("[%c]", board[pos]);
+//         }
+//         printf("\n");
+//     }
+//     printf("\033[5A");
+// }
 
 /*void draw_snake() {
     draw_square(snake.x_pos, snake.y_pos,1)
@@ -179,10 +186,7 @@ void draw_apple()
 }
 
 void draw_screen(){
-    int i;
-    for(i = 0; i<screensize; i++){
-        screen[i] = colors[0];
-    }
+    blackout_screen();
     int j = 0;
     while(snake.body[j]!=-1){
         int x_pos = snake.body[j]%snake.board_size_x;
@@ -207,7 +211,8 @@ void snake_reset()
     snake.next_direction = 'D';
 
     snake.body[0] = 0;
-    for (int i = 1; i < 20; i++) {
+    int i;
+    for (i = 1; i < 20; i++) {
         snake.body[i] = -1;
     }
 
@@ -216,9 +221,9 @@ void snake_reset()
 
 void run_game()
 {
-    snake.alaive = 1;
+    snake.alive = 1;
 
-    while (snake.alaive == 1) {
+    while (snake.alive == 1) {
         move_snake();
         draw_screen();
         sleep(1);
@@ -227,7 +232,7 @@ void run_game()
 
 void stop_game()
 {
-    snake.alaive = 0;
+    snake.alive = 0;
 }
 
 

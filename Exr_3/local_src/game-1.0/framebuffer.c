@@ -54,6 +54,14 @@ void clear_screen()
 	close(fbfd);
 }
 
+void blackout_screen()
+{
+	int i;
+    for(i = 0; i < screensize; i++) {
+        screen[i] = colors[0];
+    }
+}
+
 
 void update_screen()
 {
@@ -61,7 +69,7 @@ void update_screen()
 	ioctl(fbfd, 0x4680, &rect);
 }
 
-int draw_square(int pos_x, int pos_y, int color_val)
+void draw_square(int pos_x, int pos_y, int color_val)
 {
 	printf("draw test\n");
 	printf("screen size: %i", screensize);

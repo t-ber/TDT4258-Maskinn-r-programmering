@@ -64,7 +64,6 @@ void blackout_screen()
 
 void update_screen()
 {
-	printf("update screen\n");
 	ioctl(fbfd, 0x4680, &rect);
 }
 

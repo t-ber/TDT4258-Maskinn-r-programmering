@@ -11,7 +11,7 @@ void on_button_pressed(char button) {
     switch (button)
     {
         case 'd':
-            if (snake.alive == 1) {
+            if (snake.alive) {
                 stop_game();
             }
             else {
@@ -50,18 +50,18 @@ void on_button_pressed(char button) {
 
 void snake_is_dead() {
     if (snake.x_pos == snake.board_size_x || snake.y_pos == snake.board_size_y){
-        snake.alive = 0;
+        snake.alive = false;
         return;
     }
     if (snake.x_pos < 0 || snake.y_pos < 0){
-        snake.alive = 0;
+        snake.alive = false;
         return;
     }
     
     int i;
     for (i = 1; i < sizeof(snake.body); i++) {
         if (snake.body[0] == snake.body[i]) {
-            snake.alive = 0;
+            snake.alive = false;
             return;
         }
     }
@@ -178,6 +178,8 @@ void move_snake() {
     head_pos_to_array_pos();
     snake_is_dead();
     eat(last_tail_pos);
+
+    printf("y pos of head: %i\n", snake.body[0]/snake.board_size_x);
 }
 
 // void print_board(char *board, int y_size, int x_size){
@@ -207,8 +209,8 @@ void move_snake() {
 
 void draw_apple()
 {
-        int x_pos = snake.apple_pos%snake.board_size_x;
-        int y_pos = (snake.apple_pos-x_pos)/snake.board_size_x;
+        int x_pos = snake.apple_pos % snake.board_size_x * BLOCK_SIZE;
+        int y_pos = snake.apple_pos / snake.board_size_x * BLOCK_SIZE;
         draw_square(x_pos, y_pos, 2);
 }
 
@@ -217,7 +219,7 @@ void draw_screen(){
     int j = 0;
     while (snake.body[j] != -1) {
         int x_pos = (snake.body[j]%snake.board_size_x) * BLOCK_SIZE;
-        int y_pos = ((snake.body[j]-x_pos)/snake.board_size_x) * BLOCK_SIZE;
+        int y_pos = (snake.body[j]/snake.board_size_x) * BLOCK_SIZE;
         draw_square(x_pos,y_pos, 1);
         j++;
     }
@@ -232,8 +234,8 @@ void snake_reset()
     snake.x_pos = 0;
     snake.y_pos = 0;
     snake.tail_indx = 0;
-    snake.alive = 0;
-    snake.apple_pos = 5;
+    snake.alive = false;
+    snake.apple_pos = 200;
     snake.direction = 'D';
     snake.next_direction = 'D';
 
@@ -248,9 +250,9 @@ void snake_reset()
 
 void run_game()
 {
-    snake.alive = 1;
+    snake.alive = true;
 
-    while (snake.alive == 1) {
+    while (snake.alive) {
         move_snake();
         draw_screen();
         usleep(100000);
@@ -259,7 +261,7 @@ void run_game()
 
 void stop_game()
 {
-    snake.alive = 0;
+    snake.alive = false;
 }
 
 

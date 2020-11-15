@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <unistd.h> //for sleep
 #include <stdlib.h> //for rand
 
@@ -16,10 +17,10 @@ struct Snake
     uint8_t board_size_y;
     uint8_t x_pos;
     uint8_t y_pos;
-    int8_t tail_indx;
-    int8_t body[20];
-    int8_t alive;
-    short apple_pos;
+    uint8_t tail_indx;
+    uint32_t body[20];
+    bool alive;
+    uint32_t apple_pos;
     char direction;
     char next_direction;
 };

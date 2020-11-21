@@ -14,4 +14,8 @@ CFLAGS_MODULE := -mlong-calls
 modules modules_install clean:
 	$(MAKE) -C $(PTX_KERNEL_DIR) M=$(CURDIR) V=$(V) $@
 
+.PHONY : pretty
+pretty :
+	-indent *.c *.h
+
 endif

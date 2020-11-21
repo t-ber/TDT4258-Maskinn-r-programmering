@@ -138,31 +138,6 @@ void spawn_apple() {
    
 }
 
-/* void update_snake_on_board(char *board) {
-    uint8_t snake_part_position;
-    board[snake.apple_pos] = 'A';
-    board[snake.body[0]] = 'H';
-    
-    for (int i = 1; i < 20; i++){
-        if (snake.body[i] != -1 ){
-            snake_part_position = snake.body[i];
-            board[snake_part_position] = 'S';
-        }
-        else{
-            board[snake.body[i]] = ' ';
-        }
-        
-    }
-    
-    
-} */
-
-/* void clear_board(char *board, int board_size){
-    for (int i = 0; i < board_size; i++){
-        board[i] = ' ';
-    } 
-} */
-
 void eat(uint32_t last_tail_pos) {
     if (snake.body[0] == snake.apple_pos) {
         if (snake.tail_indx < SNAKE_MAX_LENGTH - 1) {
@@ -182,31 +157,6 @@ void move_snake() {
     snake_is_dead();
     eat(last_tail_pos);
 }
-
-// void print_board(char *board, int y_size, int x_size){
-//     int i;
-//     int j;
-//     for (i = 0; i < y_size; i++){
-//         for (j = 0; j < x_size; j++){
-//             int pos = j + x_size*i;
-//             printf("[%c]", board[pos]);
-//         }
-//         printf("\n");
-//     }
-//     printf("\033[5A");
-// }
-
-/*void draw_snake() {
-    draw_square(snake.x_pos, snake.y_pos,1)
-    if(!hit)
-    {
-        int x_pos = snake.body[snake.tail_indx]%snake.board_size_x;
-        int y_pos = (snake.body[snake.tail_indx]-x_pos)/snake.board_size_x;
-        draw_square(x_pos, y_pos,0);
-    }
-
-    
-}*/
 
 void draw_apple()
 {
@@ -279,51 +229,3 @@ void start_game()
 {
     snake.game_running = true;
 }
-
-/* void example_with_setup() {
-    int board_x = 32;
-    int board_y = 24;
-    const int BOARD_SIZE = 768;
-    char board[768] = {' '};
-    for (int i = 0; i < BOARD_SIZE; i++){
-        board[i] = ' ';
-    }
-    
-    snake.alive = 1;
-    snake.x_pos = 0;
-    snake.y_pos = 0;
-    snake.board_size_x = board_x;
-    snake.board_size_y = board_y;
-    snake.direction = 'D';
-    snake.body[0] = 0;
-    for (int i = 1; i < 20; i++){
-        snake.body[i] = -1;
-    }
-    
-    snake.tail_indx = 0;
-
-    snake.apple_pos = 5;
-    update_snake_on_board(board, snake_1);
- 
-    print_board(board, board_x, board_y);
-    clear_board(board, BOARD_SIZE);
-    sleep(1);
-    while(1){
-        move_snake(board, snake_1);
-        
-        if (!snake.alive){
-            printf("dead");
-            break;
-        }
-       
-        //snake_1 = update_snake_head_position(snake_1);
-        //snake_1 = update_snake_body_pos(snake_1);
-        //update_snake_on_board(board, snake_1);
-        //printf("%i\n",snake_1.body[0]);
-        //printf("%c", board[snake_1.body[0]]);
-        print_board(board, board_x, board_y);
-        clear_board(board, BOARD_SIZE);
-        sleep(1);
-    }
-} */
-

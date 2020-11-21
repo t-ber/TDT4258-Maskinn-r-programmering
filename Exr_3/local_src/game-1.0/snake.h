@@ -41,20 +41,11 @@ void update_snake_body_pos();
 /*Spawns an apple on the board somwere the snake is not*/
 void spawn_apple();
 
-/*Visualises the snake and apples on the board*/
-// void update_snake_on_board(char *board);
-
-/*Clears the board*/
-// void clear_board(char *board, int board_size);
-
 /*Checks if the snake is eating an apple, if so adds new tail part*/
 void eat(uint32_t last_tail_pos);
 
 /*One iteration of moving the snake one space and interacting with the boardstate*/
 void move_snake();
-
-/*Prints the boardstate*/
-// void print_board(char *board, int y_size, int x_size);
 
 /*Handles a button press*/
 void on_button_pressed(char button);

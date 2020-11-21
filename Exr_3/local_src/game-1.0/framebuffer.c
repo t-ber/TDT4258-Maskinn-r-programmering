@@ -89,14 +89,3 @@ void draw_square(int pos_x, int pos_y, int color_val)
 	}
 
 }
-
-
-void example(int pos_x, int pos_y)
-{
-    initialize_screen();
-    draw_square(10,10,1);
-    update_screen();
-
-}
-
-

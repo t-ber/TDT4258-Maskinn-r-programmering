@@ -186,8 +186,7 @@ static int gamepad_release(struct inode *inode, struct file *filp)
 	return 0;
 }
 
-// Sender et 8 bits tall som viser hvilke knapper som ble trykket sist
-// Alternativ: vise hvilke knapper som er trykket nå
+// Sends an 8 bit number showing the status of each of the 8 buttons: 1 = pressed
 static ssize_t gamepad_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
 {
 	// We send the status of the buttons to the user application
